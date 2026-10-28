@@ -1,0 +1,168 @@
+<!doctype html>
+<html lang="en">
+<head>
+<title>About Simeon Hatzopoulos</title>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<meta name="description" content="Simeon Hatzopoulos, physics PhD researcher at the University of Cambridge working on contrail simulation.">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Schibsted+Grotesk:wght@500;700;800&family=IBM+Plex+Sans:wght@400;500;600&family=IBM+Plex+Mono:wght@400;500&display=swap">
+<style>
+/* Layout: same single column and tokens as the flight guide; the CV is a year-column timeline. */
+:root{
+  --bg:#f5f7fa; --surface:#ffffff; --fg:#14202e; --muted:#5a6878; --line:#d9e0e8;
+  --accent:#0b7a85; --accent-soft:#e1f2f3;
+  --display:"Schibsted Grotesk", "Helvetica Neue", Arial, sans-serif;
+  --body:"IBM Plex Sans", system-ui, -apple-system, "Segoe UI", sans-serif;
+  --mono:"IBM Plex Mono", ui-monospace, Menlo, Consolas, monospace;
+}
+@media (prefers-color-scheme: dark){ :root:not([data-theme="light"]){
+  --bg:#0d1420; --surface:#141e2d; --fg:#e4ebf3; --muted:#93a2b4; --line:#26344a;
+  --accent:#5cc6cf; --accent-soft:#163a42; color-scheme:dark }}
+:root[data-theme="dark"]{
+  --bg:#0d1420; --surface:#141e2d; --fg:#e4ebf3; --muted:#93a2b4; --line:#26344a;
+  --accent:#5cc6cf; --accent-soft:#163a42; color-scheme:dark }
+body{background:var(--bg);color:var(--fg);font-family:var(--body);font-size:15px;line-height:1.6}
+.wrap{max-width:860px;margin:0 auto;padding-inline:20px;padding-block:20px 56px;display:flex;flex-direction:column;gap:44px}
+.sitenav{display:flex;justify-content:space-between;align-items:center;gap:12px;flex-wrap:wrap;font:500 13px var(--mono);padding-bottom:14px;border-bottom:1px solid var(--line)}
+.sitenav .brand{color:var(--fg);text-decoration:none;font-weight:500}
+.sitenav nav{display:flex;gap:18px}
+.sitenav nav a{color:var(--muted);text-decoration:none}
+.sitenav nav a[aria-current]{color:var(--accent)}
+.sitenav nav a:hover{color:var(--fg)}
+h1,h2,h3{font-family:var(--display);text-wrap:balance;margin:0;line-height:1.15}
+h1{font-size:clamp(32px,6vw,48px);font-weight:800;letter-spacing:-0.02em}
+h2{font-size:22px;font-weight:700}
+h3{font-size:16px;font-weight:700}
+p{margin:0;max-width:66ch}
+.eyebrow{font-family:var(--mono);font-size:12px;letter-spacing:.08em;text-transform:uppercase;color:var(--accent)}
+.lede{color:var(--muted);font-size:17px}
+a{color:var(--accent)}
+a:focus-visible{outline:2px solid var(--accent);outline-offset:2px}
+.hero{display:grid;grid-template-columns:auto 1fr;gap:24px;align-items:center}
+.portrait{width:132px;height:132px;border-radius:50%;object-fit:cover;display:block;background:var(--accent-soft);box-shadow:0 0 0 4px var(--surface),0 0 0 5px var(--line)}
+.hero > div{display:flex;flex-direction:column;gap:10px;min-width:0}
+.facts{display:flex;flex-wrap:wrap;gap:6px 20px;font:13px var(--mono);color:var(--muted)}
+section{display:flex;flex-direction:column;gap:16px}
+.bio{display:flex;flex-direction:column;gap:14px}
+.work{display:grid;grid-template-columns:repeat(auto-fit,minmax(240px,1fr));gap:12px}
+.card{background:var(--surface);border:1px solid var(--line);border-radius:10px;padding:18px;display:flex;flex-direction:column;gap:8px;min-width:0}
+.card .tag{font:500 11px var(--mono);letter-spacing:.06em;text-transform:uppercase;color:var(--accent)}
+.card p{font-size:14px;color:var(--muted)}
+.cv{display:flex;flex-direction:column;gap:28px}
+.cv-group{display:flex;flex-direction:column;gap:0}
+.cv-group h3{font:500 12px var(--mono);letter-spacing:.08em;text-transform:uppercase;color:var(--muted);padding-bottom:8px;border-bottom:1px solid var(--line)}
+.entry{display:grid;grid-template-columns:110px 1fr;gap:16px;padding:12px 0;border-bottom:1px solid var(--line)}
+.entry .yr{font:13px var(--mono);color:var(--muted);font-variant-numeric:tabular-nums;padding-top:2px}
+.entry > div{min-width:0;display:flex;flex-direction:column;gap:2px}
+.entry b{font-weight:600}
+.entry span{color:var(--muted);font-size:14px}
+.chips{display:flex;flex-wrap:wrap;gap:8px}
+.chip{font:500 13px var(--mono);padding:4px 10px;border-radius:99px;background:var(--accent-soft);color:var(--accent)}
+footer{font-size:13px;color:var(--muted);border-top:1px solid var(--line);padding-top:16px}
+@media (max-width:520px){
+  .hero{grid-template-columns:1fr}
+  .portrait{width:104px;height:104px}
+  .entry{grid-template-columns:1fr;gap:2px}
+}
+</style>
+<style>body{margin:0}*{box-sizing:border-box}</style>
+</head>
+<body>
+
+<div class="wrap">
+<div class="sitenav">
+  <a class="brand" href="index.html">nocontrailguide.org</a>
+  <nav aria-label="Site"><a href="index.html">Flight guide</a><a href="about.html" aria-current="page">About</a></nav>
+</div>
+
+<header class="hero">
+  <img class="portrait" src="simeon.jpg" alt="Portrait of Simeon Hatzopoulos" width="132" height="132">
+  <div>
+    <div class="eyebrow">About</div>
+    <h1>Simeon Hatzopoulos</h1>
+    <p class="lede">PhD researcher in physics at the University of Cambridge, simulating how aircraft contrails form and evolve.</p>
+    <div class="facts"><span>Clare College, Cambridge</span><span>Cambridge–Boeing collaboration</span><span>Studienstiftung scholar</span></div>
+  </div>
+</header>
+
+<section>
+  <h2>Bio</h2>
+  <div class="bio">
+    <p>I'm a physics PhD student at the University of Cambridge, where I build multiphysics simulations of contrail formation and evolution. Contrails may account for a large share of aviation's warming effect, and understanding how they form is the first step towards avoiding them. My PhD is part of the Cambridge–Boeing collaboration and is funded by Boeing, alongside a PhD scholarship from the German Academic Scholarship Foundation (Studienstiftung).</p>
+    <p>I studied physics at UCL, focusing on condensed matter in my master's year. Along the way I found I enjoyed the computing side most, so I moved to scientific computing for my MPhil at Cambridge. Since then my work has been in numerical methods and high-performance computing, applied to problems in aviation and climate.</p>
+    <p>Outside research I supervise Cambridge undergraduates and tutor, and I've organised speaker events and a college research conference. I also captained the Clare Hall Boat Club. I speak English and German fluently, and some Greek.</p>
+  </div>
+</section>
+
+<section>
+  <h2>Current work</h2>
+  <div class="work">
+    <div class="card">
+      <div class="tag">PhD research</div>
+      <h3>Multiphysics modelling of contrails</h3>
+      <p>Simulating the exhaust jet behind an aircraft engine, from the nozzle through the mixing that leads to ice formation. I work with Nikos Nikiforakis's group in Cambridge and present the work at the annual Cambridge–Boeing review.</p>
+    </div>
+    <div class="card">
+      <div class="tag">Paper in preparation</div>
+      <h3>Particle-laden jets</h3>
+      <p>A numerical model for jets carrying soot, sulfate and water-droplet particles, validated step by step from plane jets to round jets. A follow-up will add an ice model to capture contrail formation.</p>
+    </div>
+    <div class="card">
+      <div class="tag">Collaboration</div>
+      <h3>Lab contrails, simulated one-to-one</h3>
+      <p>Working with a University of Toronto group whose cold-chamber facility produces contrails in the lab, so we can compare simulation and experiment directly.</p>
+    </div>
+    <div class="card">
+      <div class="tag">Side project</div>
+      <h3>No Contrail Guide</h3>
+      <p>This website. It helps travellers choose departure times and aircraft that keep their flight's contrails out of the night sky. <a href="index.html">Try the guide</a>.</p>
+    </div>
+  </div>
+</section>
+
+<section>
+  <h2>CV</h2>
+  <div class="cv">
+    <div class="cv-group">
+      <h3>Education</h3>
+      <div class="entry"><div class="yr">2024–now</div><div><b>PhD in Physics</b><span>University of Cambridge · Clare College · contrail simulation</span></div></div>
+      <div class="entry"><div class="yr">2023–24</div><div><b>MPhil in Scientific Computing</b><span>University of Cambridge · Clare Hall</span></div></div>
+      <div class="entry"><div class="yr">2019–23</div><div><b>MSci Physics</b><span>University College London · master's year in condensed matter</span></div></div>
+    </div>
+    <div class="cv-group">
+      <h3>Research &amp; industry</h3>
+      <div class="entry"><div class="yr">2024–now</div><div><b>Student researcher, Boeing</b><span>Cambridge–Boeing collaboration on contrail modelling</span></div></div>
+      <div class="entry"><div class="yr">2022</div><div><b>Research intern, high-energy physics</b><span>University College London</span></div></div>
+      <div class="entry"><div class="yr">2021</div><div><b>Summer placement, Bosch</b><span>Reutlingen, Germany</span></div></div>
+    </div>
+    <div class="cv-group">
+      <h3>Scholarships</h3>
+      <div class="entry"><div class="yr">2025–now</div><div><b>PhD scholarship, Studienstiftung des deutschen Volkes</b><span>German Academic Scholarship Foundation</span></div></div>
+    </div>
+    <div class="cv-group">
+      <h3>Teaching</h3>
+      <div class="entry"><div class="yr">Ongoing</div><div><b>Undergraduate supervisor</b><span>University of Cambridge</span></div></div>
+      <div class="entry"><div class="yr">~4 years</div><div><b>Private tutor</b><span>Self-employed</span></div></div>
+    </div>
+    <div class="cv-group">
+      <h3>Leadership</h3>
+      <div class="entry"><div class="yr">Current</div><div><b>Speakers' Officer, Cambridge University German Society</b><span>Hosted speakers including Volkmar Denner</span></div></div>
+      <div class="entry"><div class="yr">2025–26</div><div><b>Captain, Clare Hall Boat Club</b></div></div>
+      <div class="entry"><div class="yr">Previously</div><div><b>Vice-President, Clare MCR</b></div></div>
+      <div class="entry"><div class="yr">Previously</div><div><b>President, Clareity</b><span>Organised a college research conference</span></div></div>
+    </div>
+    <div class="cv-group">
+      <h3>Skills &amp; languages</h3>
+      <div class="chips" style="padding-top:12px">
+        <span class="chip">Computational fluid dynamics</span><span class="chip">Numerical methods</span><span class="chip">HPC</span><span class="chip">English</span><span class="chip">German</span><span class="chip">Greek (basic)</span>
+      </div>
+    </div>
+  </div>
+</section>
+
+<footer>© 2026 Simeon Hatzopoulos · nocontrailguide.org</footer>
+</div>
+
+</body>
+</html>

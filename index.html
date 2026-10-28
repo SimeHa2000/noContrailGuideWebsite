@@ -1,0 +1,413 @@
+<!doctype html>
+<html lang="en">
+<head>
+<title>No Contrail Guide</title>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<meta name="description" content="Choose flights that minimise contrail warming: departure times, aircraft and airline trials for your route.">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Schibsted+Grotesk:wght@500;700;800&family=IBM+Plex+Sans:wght@400;500;600&family=IBM+Plex+Mono:wght@400;500&display=swap">
+<style>
+/* Layout: one narrow column; the hero is the route planner itself, the departure-hour chart is the centrepiece. */
+:root{
+  --bg:#f5f7fa; --surface:#ffffff; --fg:#14202e; --muted:#5a6878; --line:#d9e0e8;
+  --accent:#0b7a85; --accent-soft:#e1f2f3;
+  --day:#9fd3dc; --dusk:#e0973c; --night:#2b3a67; --good:#1d8a52; --warn:#b4621a;
+  --display:"Schibsted Grotesk", "Helvetica Neue", Arial, sans-serif;
+  --body:"IBM Plex Sans", system-ui, -apple-system, "Segoe UI", sans-serif;
+  --mono:"IBM Plex Mono", ui-monospace, Menlo, Consolas, monospace;
+}
+@media (prefers-color-scheme: dark){ :root:not([data-theme="light"]){
+  --bg:#0d1420; --surface:#141e2d; --fg:#e4ebf3; --muted:#93a2b4; --line:#26344a;
+  --accent:#5cc6cf; --accent-soft:#163a42;
+  --day:#4f8e9a; --dusk:#e8a24f; --night:#8a9be0; --good:#4cc283; --warn:#e8a24f; color-scheme:dark }}
+:root[data-theme="dark"]{
+  --bg:#0d1420; --surface:#141e2d; --fg:#e4ebf3; --muted:#93a2b4; --line:#26344a;
+  --accent:#5cc6cf; --accent-soft:#163a42;
+  --day:#4f8e9a; --dusk:#e8a24f; --night:#8a9be0; --good:#4cc283; --warn:#e8a24f; color-scheme:dark }
+body{background:var(--bg);color:var(--fg);font-family:var(--body);font-size:15px;line-height:1.55}
+.wrap{max-width:860px;margin:0 auto;padding-inline:20px;padding-block:28px 56px;display:flex;flex-direction:column;gap:40px}
+h1,h2,h3{font-family:var(--display);text-wrap:balance;margin:0;line-height:1.15}
+h1{font-size:clamp(30px,6vw,46px);font-weight:800;letter-spacing:-0.02em}
+h2{font-size:22px;font-weight:700}
+h3{font-size:16px;font-weight:700}
+p{margin:0;max-width:66ch}
+.eyebrow{font-family:var(--mono);font-size:12px;letter-spacing:.08em;text-transform:uppercase;color:var(--accent)}
+.lede{color:var(--muted);font-size:16px}
+header{display:flex;flex-direction:column;gap:12px}
+section{display:flex;flex-direction:column;gap:16px}
+.panel{background:var(--surface);border:1px solid var(--line);border-radius:10px;padding:20px}
+.form{display:grid;grid-template-columns:1fr auto 1fr;gap:12px;align-items:end}
+.form .row2{grid-column:1/-1;display:grid;grid-template-columns:repeat(auto-fit,minmax(150px,1fr));gap:12px}
+label{display:flex;flex-direction:column;gap:6px;font-size:12px;font-family:var(--mono);letter-spacing:.05em;text-transform:uppercase;color:var(--muted);min-width:0}
+input,select{font:500 16px var(--body);color:var(--fg);background:var(--bg);border:1px solid var(--line);border-radius:6px;padding:10px 12px;width:100%;box-sizing:border-box;min-width:0}
+input:focus-visible,select:focus-visible,button:focus-visible{outline:2px solid var(--accent);outline-offset:2px}
+button{font:600 14px var(--body);cursor:pointer;border-radius:6px;border:1px solid var(--line);background:var(--surface);color:var(--fg);padding:10px 14px}
+button.swap{padding:10px;font-family:var(--mono)}
+button.primary{background:var(--accent);border-color:var(--accent);color:var(--bg)}
+.err{color:var(--warn);font-size:14px}
+.summary{display:flex;flex-wrap:wrap;gap:8px 24px;font-family:var(--mono);font-size:13px;color:var(--muted)}
+.summary b{color:var(--fg);font-weight:500}
+.chart-wrap{overflow-x:auto}
+svg text{font-family:var(--mono)}
+.legend{display:flex;flex-wrap:wrap;gap:14px;font-size:13px;color:var(--muted)}
+.sw{display:inline-block;width:12px;height:12px;border-radius:2px;margin-right:6px;vertical-align:-1px}
+.verdict{display:grid;grid-template-columns:repeat(auto-fit,minmax(220px,1fr));gap:12px}
+.verdict > div{border-top:3px solid var(--line);padding-top:10px;display:flex;flex-direction:column;gap:4px;min-width:0}
+.verdict .best{border-color:var(--good)} .verdict .worst{border-color:var(--warn)}
+.verdict .big{font-family:var(--display);font-size:24px;font-weight:700}
+.flags{display:flex;flex-direction:column;gap:10px}
+.flag{border-left:3px solid var(--accent);padding:4px 0 4px 12px}
+.flag.hot{border-color:var(--warn)}
+table{border-collapse:collapse;width:100%;font-size:14px;font-variant-numeric:tabular-nums}
+th{text-align:left;font:500 11px var(--mono);letter-spacing:.06em;text-transform:uppercase;color:var(--muted);padding:8px 8px;border-bottom:1px solid var(--line)}
+td{padding:8px;border-bottom:1px solid var(--line);vertical-align:middle}
+td input,td select{font-size:14px;padding:6px 8px}
+.pill{display:inline-block;font:500 12px var(--mono);padding:2px 8px;border-radius:99px;white-space:nowrap}
+.pill.low{background:color-mix(in srgb,var(--good) 18%,transparent);color:var(--good)}
+.pill.mid{background:color-mix(in srgb,var(--dusk) 20%,transparent);color:var(--warn)}
+.pill.high{background:color-mix(in srgb,var(--night) 22%,transparent);color:var(--night)}
+.pill.lean{background:var(--accent-soft);color:var(--accent)}
+.pill.rich{background:transparent;border:1px solid var(--line);color:var(--muted)}
+.rank{font:700 18px var(--display);color:var(--accent)}
+.note{font-size:13px;color:var(--muted)}
+.trials{display:grid;grid-template-columns:repeat(auto-fit,minmax(240px,1fr));gap:12px}
+.trial{border:1px solid var(--line);border-radius:8px;padding:14px;display:flex;flex-direction:column;gap:6px;background:var(--surface);min-width:0}
+.trial.on{border-color:var(--accent);box-shadow:inset 0 0 0 1px var(--accent)}
+.trial .tag{font:500 11px var(--mono);letter-spacing:.06em;text-transform:uppercase;color:var(--accent)}
+.rules{display:flex;flex-direction:column;gap:14px;padding:0;margin:0;list-style:none}
+.rules li{display:grid;grid-template-columns:28px 1fr;gap:10px}
+.rules li span{font:700 18px var(--display);color:var(--accent)}
+footer{font-size:13px;color:var(--muted);border-top:1px solid var(--line);padding-top:16px;display:flex;flex-direction:column;gap:8px}
+a{color:var(--accent)}
+.tbl-wrap{overflow-x:auto}
+.sitenav{display:flex;justify-content:space-between;align-items:center;gap:12px;flex-wrap:wrap;font:500 13px var(--mono);padding-bottom:14px;border-bottom:1px solid var(--line);margin-bottom:-12px}
+.sitenav .brand{color:var(--fg);text-decoration:none}
+.sitenav nav{display:flex;gap:18px}
+.sitenav nav a{color:var(--muted);text-decoration:none}
+.sitenav nav a[aria-current]{color:var(--accent)}
+.sitenav nav a:hover{color:var(--fg)}
+@media (max-width:560px){ .form{grid-template-columns:1fr} button.swap{justify-self:start} }
+</style>
+<style>body{margin:0}*{box-sizing:border-box}</style>
+</head>
+<body>
+
+<div class="wrap">
+<div class="sitenav">
+  <a class="brand" href="index.html">nocontrailguide.org</a>
+  <nav aria-label="Site"><a href="index.html" aria-current="page">Flight guide</a><a href="about.html">About</a></nav>
+</div>
+<header>
+  <div class="eyebrow">nocontrailguide.org · prototype</div>
+  <h1>Pick the flight that leaves the smallest trail</h1>
+  <p class="lede">Contrails that linger after dark trap heat and do no cooling. Enter your route and the date you plan to fly, and the guide shows which departure times keep your cruise in daylight, which aircraft burn cleaner, and whether airlines on your route are trialling contrail avoidance.</p>
+</header>
+
+<section class="panel" aria-label="Your trip">
+  <form id="trip" class="form" autocomplete="off">
+    <label for="orig">From
+      <input id="orig" list="airports" value="LHR — London Heathrow">
+    </label>
+    <button type="button" class="swap" id="swap" aria-label="Swap origin and destination">⇄</button>
+    <label for="dest">To
+      <input id="dest" list="airports" value="BOS — Boston Logan">
+    </label>
+    <div class="row2">
+      <label for="date">Travel date
+        <input id="date" type="date" value="2026-12-10">
+      </label>
+      <label for="hour">Departure you're eyeing
+        <input id="hour" type="time" value="18:30">
+      </label>
+    </div>
+    <datalist id="airports"></datalist>
+  </form>
+  <p class="err" id="err" hidden></p>
+</section>
+
+<section id="results">
+  <div>
+    <h2 id="routeTitle">Departure time</h2>
+  </div>
+  <div class="summary" id="summary"></div>
+  <div class="panel">
+    <div class="chart-wrap"><svg id="chart" viewBox="0 0 720 260" width="100%" role="img" aria-label="Share of cruise whose contrails would live in darkness, by departure hour"></svg></div>
+    <div class="legend">
+      <span><i class="sw" style="background:var(--night)"></i>Contrail forms at night</span>
+      <span><i class="sw" style="background:var(--dusk)"></i>Forms in daylight, lives into the night (sun sets within 2 h)</span>
+      <span><i class="sw" style="background:var(--day)"></i>Daylight</span>
+    </div>
+    <p class="note" style="margin-top:8px">Bars show the share of cruise time, by local departure hour at the origin. Tap a bar to pick that time.</p>
+  </div>
+  <div class="verdict" id="verdict"></div>
+  <div class="flags" id="flags"></div>
+</section>
+
+<section>
+  <h2>Compare the flights you're looking at</h2>
+  <p>Copy the options from your flight search: departure time and aircraft type. They are ranked by night exposure, with cleaner-burning engines breaking ties. The rows below are examples.</p>
+  <div class="panel tbl-wrap">
+    <table>
+      <thead><tr><th>#</th><th>Flight</th><th>Departs</th><th>Aircraft</th><th>Night exposure</th><th>Engine</th></tr></thead>
+      <tbody id="cmpBody"></tbody>
+    </table>
+    <div style="display:flex;gap:8px;margin-top:12px;flex-wrap:wrap">
+      <button type="button" id="addRow">Add a flight</button>
+      <button type="button" class="primary" id="rank">Rank flights</button>
+    </div>
+  </div>
+</section>
+
+<section>
+  <h2>Aircraft: what actually matters</h2>
+  <ul class="rules">
+    <li><span>1</span><p><b>Combustor beats age.</b> Lean-burn combustors (GE's TAPS family on the GEnx, LEAP and GE9X) emit far less soot. Fewer soot particles mean fewer, larger ice crystals, so the contrail is optically thinner and falls out sooner.</p></li>
+    <li><span>2</span><p><b>Efficient engines form contrails slightly more easily.</b> Higher propulsive efficiency means cooler exhaust, which raises the threshold temperature for formation. The soot effect usually matters more for how long the contrail lasts.</p></li>
+    <li><span>3</span><p><b>Check the engine, not just the airframe.</b> A Boeing 787 can have GEnx (lean-burn) or Trent 1000 (rich-burn) engines depending on the airline. An A320neo can have LEAP-1A or PW1100G. Seat-map sites usually list the variant.</p></li>
+    <li><span>4</span><p><b>Never trade a nonstop for a connection.</b> The extra take-off and distance add CO₂ that usually outweighs any contrail saving.</p></li>
+  </ul>
+</section>
+
+<section>
+  <h2>Airlines and airspace trialling avoidance</h2>
+  <p>Trials cover a subset of flights, so booking with a trial airline does not mean your flight will be rerouted. The card for your route is highlighted.</p>
+  <div class="trials" id="trials">
+    <div class="trial" data-region="natl">
+      <div class="tag">North Atlantic · winter 2026–27 onward</div>
+      <h3>Operation Blue Skies</h3>
+      <p>NATS will make small altitude changes for flights crossing Shanwick oceanic airspace northwest of Ireland, guided by Google's forecasts, with the Met Office. Cambridge and Imperial verify the results independently. Participating airlines haven't been named.</p>
+      <a href="https://www.imperial.ac.uk/news/articles/natural-sciences/physics/2026/worlds-first-trial-to-test-if-flightpath-changes-could-cut-aviations-climate-impact-/" target="_blank" rel="noopener">Imperial College announcement</a>
+    </div>
+    <div class="trial" data-region="hkg">
+      <div class="tag">Asia &amp; transpacific · 2026</div>
+      <h3>Cathay Pacific with Google</h3>
+      <p>More than 80 of over 100 trial flights followed avoidance routes, with an estimated 40% cut in contrail warming on those flights. A larger second phase is under way.</p>
+      <a href="https://blog.google/innovation-and-ai/models-and-research/google-research/contrail-avoidance-ultra-long-haul-flights/" target="_blank" rel="noopener">Google announcement</a>
+    </div>
+    <div class="trial" data-region="us">
+      <div class="tag">United States · 2023 pilot</div>
+      <h3>American Airlines with Google and Breakthrough Energy</h3>
+      <p>An early pilot in which pilots used contrail forecasts to change altitude. Later Google analysis of a larger airline-led trial found 62% fewer contrails on flights that flew the avoidance plan, with no measurable fuel penalty.</p>
+      <a href="https://research.google/pubs/efficacy-of-scalable-airline-led-contrail-avoidance/" target="_blank" rel="noopener">Google Research paper</a>
+    </div>
+    <div class="trial" data-region="gulf">
+      <div class="tag">Gulf &amp; long-haul</div>
+      <h3>Etihad with SATAVIA</h3>
+      <p>Etihad has run contrail-avoidance flights using SATAVIA's forecasting platform. Check the airline's current sustainability pages for whether it is still active.</p>
+    </div>
+  </div>
+</section>
+
+<footer>
+  <p><b>How this is calculated.</b> The flight follows the great-circle route at an average 840 km/h, plus 30 minutes for taxi and climb. Winds are ignored, so eastbound transatlantic flights arrive earlier than shown. Cruise starts 25 minutes after take-off and ends 30 minutes before landing. Every 5 minutes of cruise, the sun's elevation is computed at the aircraft's position. A sample counts as night if the sun is below the horizon, and as "lives into the night" if the sun will set there within two hours.</p>
+  <p>Persistent contrails only form in ice-supersaturated air, which can't be forecast weeks ahead. This guide shows when a contrail <i>would</i> do the most harm, not whether one will form. Nothing here is a booking recommendation.</p>
+</footer>
+</div>
+
+<script>
+const AIRPORTS = [
+["LHR","London Heathrow",51.47,-0.4543,"Europe/London"],["LGW","London Gatwick",51.153,-0.182,"Europe/London"],
+["MAN","Manchester",53.354,-2.275,"Europe/London"],["EDI","Edinburgh",55.95,-3.372,"Europe/London"],
+["DUB","Dublin",53.4213,-6.2701,"Europe/Dublin"],["CDG","Paris Charles de Gaulle",49.0097,2.5479,"Europe/Paris"],
+["AMS","Amsterdam Schiphol",52.3105,4.7683,"Europe/Amsterdam"],["FRA","Frankfurt",50.0379,8.5622,"Europe/Berlin"],
+["MUC","Munich",48.3538,11.7861,"Europe/Berlin"],["ZRH","Zurich",47.4582,8.5555,"Europe/Zurich"],
+["MAD","Madrid Barajas",40.4983,-3.5676,"Europe/Madrid"],["FCO","Rome Fiumicino",41.8003,12.2389,"Europe/Rome"],
+["ATH","Athens",37.9364,23.9445,"Europe/Athens"],["IST","Istanbul",41.2753,28.7519,"Europe/Istanbul"],
+["CPH","Copenhagen",55.618,12.656,"Europe/Copenhagen"],["HEL","Helsinki",60.3172,24.9633,"Europe/Helsinki"],
+["KEF","Reykjavík Keflavík",63.985,-22.6056,"Atlantic/Reykjavik"],["BOS","Boston Logan",42.3656,-71.0096,"America/New_York"],
+["JFK","New York JFK",40.6413,-73.7781,"America/New_York"],["EWR","Newark",40.6895,-74.1745,"America/New_York"],
+["IAD","Washington Dulles",38.9531,-77.4565,"America/New_York"],["ORD","Chicago O'Hare",41.9742,-87.9073,"America/Chicago"],
+["ATL","Atlanta",33.6407,-84.4277,"America/New_York"],["DFW","Dallas Fort Worth",32.8998,-97.0403,"America/Chicago"],
+["DEN","Denver",39.8561,-104.6737,"America/Denver"],["SFO","San Francisco",37.6213,-122.379,"America/Los_Angeles"],
+["LAX","Los Angeles",33.9416,-118.4085,"America/Los_Angeles"],["SEA","Seattle",47.4502,-122.3088,"America/Los_Angeles"],
+["YYZ","Toronto Pearson",43.6777,-79.6248,"America/Toronto"],["YVR","Vancouver",49.1967,-123.1815,"America/Vancouver"],
+["MIA","Miami",25.7959,-80.287,"America/New_York"],["MEX","Mexico City",19.4361,-99.0719,"America/Mexico_City"],
+["GRU","São Paulo Guarulhos",-23.4356,-46.4731,"America/Sao_Paulo"],["DXB","Dubai",25.2532,55.3657,"Asia/Dubai"],
+["AUH","Abu Dhabi",24.433,54.6511,"Asia/Dubai"],["DOH","Doha",25.2731,51.6081,"Asia/Qatar"],
+["DEL","Delhi",28.5562,77.1,"Asia/Kolkata"],["BOM","Mumbai",19.0896,72.8656,"Asia/Kolkata"],
+["SIN","Singapore Changi",1.3644,103.9915,"Asia/Singapore"],["HKG","Hong Kong",22.308,113.9185,"Asia/Hong_Kong"],
+["NRT","Tokyo Narita",35.772,140.3929,"Asia/Tokyo"],["HND","Tokyo Haneda",35.5494,139.7798,"Asia/Tokyo"],
+["ICN","Seoul Incheon",37.4602,126.4407,"Asia/Seoul"],["PEK","Beijing Capital",40.0799,116.6031,"Asia/Shanghai"],
+["PVG","Shanghai Pudong",31.1443,121.8083,"Asia/Shanghai"],["BKK","Bangkok Suvarnabhumi",13.69,100.7501,"Asia/Bangkok"],
+["SYD","Sydney",-33.9399,151.1753,"Australia/Sydney"],["MEL","Melbourne",-37.669,144.841,"Australia/Melbourne"],
+["AKL","Auckland",-37.0082,174.785,"Pacific/Auckland"],["JNB","Johannesburg",-26.1392,28.246,"Africa/Johannesburg"],
+["CPT","Cape Town",-33.9715,18.6021,"Africa/Johannesburg"],["NBO","Nairobi",-1.3192,36.9278,"Africa/Nairobi"],
+["CAI","Cairo",30.1219,31.4056,"Africa/Cairo"]];
+const AIRCRAFT = [
+ ["787 (GEnx)","Boeing 787 · GEnx-1B","lean"],["787 (Trent 1000)","Boeing 787 · Trent 1000","rich"],
+ ["A350","Airbus A350 · Trent XWB","rich"],["777-300ER","Boeing 777-300ER · GE90","rich"],
+ ["777-9","Boeing 777-9 · GE9X","lean"],["A330neo","Airbus A330neo · Trent 7000","rich"],
+ ["A380","Airbus A380","rich"],["737 MAX","Boeing 737 MAX · LEAP-1B","lean"],
+ ["A320neo (LEAP)","A320neo family · LEAP-1A","lean"],["A320neo (PW)","A320neo family · PW1100G","rich"],
+ ["A220","Airbus A220 · PW1500G","rich"],["Older type","Older type (767, A330ceo, 737NG…)","rich"],["Unknown","Not sure","unk"]];
+
+const D2R=Math.PI/180, R2D=180/Math.PI;
+const $=id=>document.getElementById(id);
+$("airports").innerHTML = AIRPORTS.map(a=>`<option value="${a[0]} — ${a[1]}"></option>`).join("");
+const findAp = s => { const c=(s||"").trim().slice(0,3).toUpperCase(); return AIRPORTS.find(a=>a[0]===c); };
+
+function sunElev(ms, lat, lon){
+  const d = ms/86400000 + 2440587.5 - 2451545.0;
+  const g=(357.529+0.98560028*d)*D2R, q=280.459+0.98564736*d;
+  const L=(q+1.915*Math.sin(g)+0.020*Math.sin(2*g))*D2R;
+  const e=(23.439-0.00000036*d)*D2R;
+  const ra=Math.atan2(Math.cos(e)*Math.sin(L),Math.cos(L));
+  const dec=Math.asin(Math.sin(e)*Math.sin(L));
+  const gmst=((18.697374558+24.06570982441908*d)%24)*15;
+  const H=(gmst+lon)*D2R-ra;
+  return Math.asin(Math.sin(lat*D2R)*Math.sin(dec)+Math.cos(lat*D2R)*Math.cos(dec)*Math.cos(H))*R2D;
+}
+function gc(a,b){
+  const [p1,l1,p2,l2]=[a[2]*D2R,a[3]*D2R,b[2]*D2R,b[3]*D2R];
+  const del=2*Math.asin(Math.sqrt(Math.sin((p2-p1)/2)**2+Math.cos(p1)*Math.cos(p2)*Math.sin((l2-l1)/2)**2));
+  const point=f=>{ if(del===0) return [a[2],a[3]];
+    const A=Math.sin((1-f)*del)/Math.sin(del), B=Math.sin(f*del)/Math.sin(del);
+    const x=A*Math.cos(p1)*Math.cos(l1)+B*Math.cos(p2)*Math.cos(l2);
+    const y=A*Math.cos(p1)*Math.sin(l1)+B*Math.cos(p2)*Math.sin(l2);
+    const z=A*Math.sin(p1)+B*Math.sin(p2);
+    return [Math.atan2(z,Math.hypot(x,y))*R2D, Math.atan2(y,x)*R2D]; };
+  return {km:del*6371, point};
+}
+function tzOffset(tz, ms){
+  const p={}; new Intl.DateTimeFormat("en-US",{timeZone:tz,hourCycle:"h23",year:"numeric",month:"2-digit",day:"2-digit",hour:"2-digit",minute:"2-digit",second:"2-digit"})
+    .formatToParts(new Date(ms)).forEach(x=>p[x.type]=x.value);
+  return Date.UTC(+p.year,+p.month-1,+p.day,+p.hour,+p.minute,+p.second) - Math.floor(ms/1000)*1000;
+}
+function localToUtc(dateStr, minutes, tz){
+  const [y,m,d]=dateStr.split("-").map(Number);
+  const guess=Date.UTC(y,m-1,d,0,minutes);
+  let utc=guess-tzOffset(tz,guess); utc=guess-tzOffset(tz,utc); return utc;
+}
+function fmtLocal(ms,tz){ return new Intl.DateTimeFormat("en-GB",{timeZone:tz,hour:"2-digit",minute:"2-digit",weekday:"short"}).format(new Date(ms)); }
+
+function exposure(route, depUtc){
+  const T=(route.km/840+0.5)*3600e3, start=25*60e3, end=T-30*60e3, step=5*60e3;
+  let n=0,night=0,dusk=0, natl=false, winterHiLat=false;
+  for(let t=start;t<=end;t+=step){
+    const [lat,lon]=route.point(t/T), now=depUtc+t;
+    const e0=sunElev(now,lat,lon);
+    if(e0<0) night++; else if(sunElev(now+2*3600e3,lat,lon)<0) dusk++;
+    if(lat>45&&lat<65&&lon>-50&&lon<-10) natl=true;
+    n++;
+  }
+  if(n===0) return {night:0,dusk:0,score:0,T,natl};
+  return {night:night/n, dusk:dusk/n, score:(night+dusk)/n, T, natl};
+}
+
+const state={o:null,d:null,route:null,date:null,sel:18*60+30};
+function compute(){
+  const o=findAp($("orig").value), d=findAp($("dest").value), date=$("date").value;
+  const err=$("err");
+  if(!o||!d||o===d||!date){ err.hidden=false; err.textContent= !o||!d ? "Pick both airports from the list (type a city or a three-letter code)." : o===d ? "Origin and destination are the same airport." : "Choose a travel date."; return; }
+  err.hidden=true;
+  const [hh,mm]=($("hour").value||"18:30").split(":").map(Number); state.sel=hh*60+mm;
+  Object.assign(state,{o,d,date,route:gc(o,d)});
+  const hours=[...Array(24)].map((_,h)=>exposure(state.route, localToUtc(date,h*60,o[4])));
+  const selDep=localToUtc(date,state.sel,o[4]), selEx=exposure(state.route,selDep);
+  drawChart(hours);
+  renderSummary(selDep, selEx);
+  renderVerdict(hours, selEx);
+  renderFlags(hours, selEx);
+  renderTrials(hours.some(h=>h.natl));
+  rank();
+}
+function pct(x){return Math.round(x*100)+"%";}
+function level(s){return s<0.15?["low","Low"]:s<0.5?["mid","Medium"]:["high","High"];}
+
+function renderSummary(dep,ex){
+  const {o,d,route}=state;
+  $("routeTitle").textContent=`${o[1]} to ${d[1]}`;
+  const h=Math.floor(ex.T/3600e3), m=Math.round((ex.T%3600e3)/60e3);
+  $("summary").innerHTML=`<span>Distance <b>${Math.round(route.km).toLocaleString("en-GB")} km</b></span><span>Est. flight time <b>${h} h ${String(m).padStart(2,"0")}</b></span><span>Your departure <b>${fmtLocal(dep,o[4])}</b> → arrives <b>${fmtLocal(dep+ex.T,d[4])}</b> local</span>`;
+}
+function drawChart(hours){
+  const W=720,H=260,L=44,R=10,T=14,B=40, bw=(W-L-R)/24, ch=H-T-B, svg=$("chart");
+  let s="";
+  [0,25,50,75,100].forEach(v=>{const y=T+ch*(1-v/100);
+    s+=`<line x1="${L}" x2="${W-R}" y1="${y}" y2="${y}" stroke="var(--line)" stroke-width="1"/><text x="${L-8}" y="${y+4}" text-anchor="end" font-size="11" fill="var(--muted)">${v}%</text>`;});
+  hours.forEach((e,h)=>{
+    const x=L+h*bw+2, w=bw-4, nH=ch*e.night, dH=ch*e.dusk, dayH=ch-nH-dH;
+    const selected = Math.floor(state.sel/60)===h;
+    s+=`<g class="bar" data-h="${h}" style="cursor:pointer"><title>${String(h).padStart(2,"0")}:00 departure: ${pct(e.score)} of cruise in or into darkness</title>`;
+    s+=`<rect x="${x}" y="${T}" width="${w}" height="${Math.max(dayH,0)}" fill="var(--day)" opacity="${selected?0.9:0.45}"/>`;
+    s+=`<rect x="${x}" y="${T+dayH}" width="${w}" height="${dH}" fill="var(--dusk)"/>`;
+    s+=`<rect x="${x}" y="${T+dayH+dH}" width="${w}" height="${nH}" fill="var(--night)"/>`;
+    if(selected) s+=`<rect x="${x-1.5}" y="${T-1.5}" width="${w+3}" height="${ch+3}" fill="none" stroke="var(--fg)" stroke-width="2" rx="2"/>`;
+    s+=`</g>`;
+    if(h%3===0) s+=`<text x="${x+w/2}" y="${H-B+18}" text-anchor="middle" font-size="11" fill="var(--muted)">${String(h).padStart(2,"0")}:00</text>`;
+  });
+  s+=`<text x="${(W+L)/2}" y="${H-4}" text-anchor="middle" font-size="11" fill="var(--muted)">Local departure time at ${state.o[0]}</text>`;
+  svg.innerHTML=s;
+  svg.querySelectorAll(".bar").forEach(g=>g.addEventListener("click",()=>{ $("hour").value=String(g.dataset.h).padStart(2,"0")+":00"; compute(); }));
+}
+function window_(hours, pick){
+  const target=pick(...hours.map(h=>h.score));
+  const ok=hours.map((h,i)=>[i,h.score]).filter(([,s])=>Math.abs(s-target)<=0.05).map(([i])=>i);
+  const runs=[]; ok.forEach(i=>{ const r=runs[runs.length-1]; if(r&&r[1]===i-1) r[1]=i; else runs.push([i,i]); });
+  const f=i=>String(i).padStart(2,"0")+":00";
+  return {target, text: runs.slice(0,3).map(([a,b])=>a===b?f(a):`${f(a)}–${f(b)}`).join(", ")};
+}
+function renderVerdict(hours, sel){
+  const best=window_(hours,Math.min), worst=window_(hours,Math.max), [cls,lab]=level(sel.score);
+  $("verdict").innerHTML=`
+  <div class="best"><span class="eyebrow">Best departures</span><span class="big">${best.text}</span><span class="note">${pct(best.target)} of cruise in or into darkness</span></div>
+  <div class="worst"><span class="eyebrow">Worst departures</span><span class="big">${worst.text}</span><span class="note">${pct(worst.target)} of cruise in or into darkness</span></div>
+  <div><span class="eyebrow">Your departure</span><span class="big"><span class="pill ${cls}" style="font-size:16px">${lab}</span> ${pct(sel.score)}</span><span class="note">${pct(sel.night)} at night, ${pct(sel.dusk)} formed before sunset</span></div>`;
+}
+function renderFlags(hours, sel){
+  const m=+state.date.slice(5,7), out=[];
+  const natl=hours.some(h=>h.natl);
+  if(natl && (m>=11||m<=2)) out.push(["hot",`<b>Peak season on this route.</b> Contrails over the North Atlantic are most common in the evening between November and February, and this route crosses Shanwick oceanic airspace.`]);
+  else if(natl) out.push(["",`<b>This route crosses Shanwick oceanic airspace</b>, one of the busiest contrail regions in the world. Contrails there peak in winter evenings.`]);
+  const spread=Math.max(...hours.map(h=>h.score))-Math.min(...hours.map(h=>h.score));
+  if(spread<0.15) out.push(["",`<b>Departure time barely matters on this date.</b> The flight is long enough that most departures spend a similar share of cruise in darkness. Focus on aircraft choice and a nonstop routing.`]);
+  out.push(["",`<b>Check the return too.</b> Overnight eastbound flights spend most of their cruise in darkness. Use ⇄ to swap the airports and see the other direction.`]);
+  $("flags").innerHTML=out.map(([c,t])=>`<div class="flag ${c}"><p>${t}</p></div>`).join("");
+}
+function renderTrials(natl){
+  const ends=[state.o[0],state.d[0]], us=["BOS","JFK","EWR","IAD","ORD","ATL","DFW","DEN","SFO","LAX","SEA","MIA"];
+  const on={natl, hkg:ends.includes("HKG"), us:ends.every(c=>us.includes(c))||(ends.some(c=>us.includes(c))&&natl), gulf:ends.some(c=>["AUH"].includes(c))};
+  document.querySelectorAll(".trial").forEach(t=>t.classList.toggle("on",!!on[t.dataset.region]));
+}
+
+/* comparison table */
+const EXAMPLES=[["Example A","09:30","A350"],["Example B","12:15","787 (GEnx)"],["Example C","16:40","777-300ER"],["Example D","19:55","787 (Trent 1000)"]];
+let rowId=0;
+function addRow(name="",time="12:00",ac="Unknown"){
+  const id=rowId++, tr=document.createElement("tr");
+  tr.innerHTML=`<td class="rank">–</td>
+   <td><input id="n${id}" value="${name}" placeholder="e.g. BA 213" aria-label="Flight name" style="min-width:90px"></td>
+   <td><input id="t${id}" type="time" value="${time}" aria-label="Departure time" style="min-width:96px"></td>
+   <td><select id="a${id}" aria-label="Aircraft" style="min-width:150px">${AIRCRAFT.map(a=>`<option value="${a[0]}"${a[0]===ac?" selected":""}>${a[1]}</option>`).join("")}</select></td>
+   <td class="ex">–</td><td class="eng">–</td>`;
+  $("cmpBody").appendChild(tr);
+}
+function rank(){
+  if(!state.route) return;
+  const rows=[...$("cmpBody").rows].map(tr=>{
+    const [n,t,a]=tr.querySelectorAll("input,select"); const [hh,mm]=(t.value||"12:00").split(":").map(Number);
+    const ex=exposure(state.route, localToUtc(state.date,hh*60+mm,state.o[4]));
+    const eng=AIRCRAFT.find(x=>x[0]===a.value)[2];
+    return {tr,ex,eng,key:ex.score+(eng==="lean"?-0.02:0)};
+  });
+  rows.sort((x,y)=>x.key-y.key).forEach((r,i)=>{
+    const [cls,lab]=level(r.ex.score);
+    r.tr.querySelector(".rank").textContent=i+1;
+    r.tr.querySelector(".ex").innerHTML=`<span class="pill ${cls}">${lab} · ${pct(r.ex.score)}</span>`;
+    r.tr.querySelector(".eng").innerHTML= r.eng==="lean"?`<span class="pill lean">Lean-burn</span>`: r.eng==="rich"?`<span class="pill rich">Rich-burn</span>`:`<span class="note">Unknown</span>`;
+    $("cmpBody").appendChild(r.tr);
+  });
+}
+EXAMPLES.forEach(e=>addRow(...e));
+$("addRow").onclick=()=>addRow();
+$("rank").onclick=rank;
+$("cmpBody").addEventListener("change",rank);
+$("swap").onclick=()=>{ const a=$("orig").value; $("orig").value=$("dest").value; $("dest").value=a; compute(); };
+["orig","dest","date","hour"].forEach(id=>$(id).addEventListener("change",compute));
+$("trip").addEventListener("submit",e=>{e.preventDefault();compute();});
+compute();
+</script>
+
+</body>
+</html>
