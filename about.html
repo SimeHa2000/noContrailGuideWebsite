@@ -8,22 +8,22 @@
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Schibsted+Grotesk:wght@500;700;800&family=IBM+Plex+Sans:wght@400;500;600&family=IBM+Plex+Mono:wght@400;500&display=swap">
 <style>
-/* Layout: same single column and tokens as the flight guide; the CV is a year-column timeline. */
+/* Layout: same single column and tokens as the flight guide; work items are text + figure rows with mono captions. */
 :root{
   --bg:#f5f7fa; --surface:#ffffff; --fg:#14202e; --muted:#5a6878; --line:#d9e0e8;
-  --accent:#0b7a85; --accent-soft:#e1f2f3;
+  --accent:#0b7a85; --accent-soft:#e1f2f3; --plate:#ffffff;
   --display:"Schibsted Grotesk", "Helvetica Neue", Arial, sans-serif;
   --body:"IBM Plex Sans", system-ui, -apple-system, "Segoe UI", sans-serif;
   --mono:"IBM Plex Mono", ui-monospace, Menlo, Consolas, monospace;
 }
 @media (prefers-color-scheme: dark){ :root:not([data-theme="light"]){
   --bg:#0d1420; --surface:#141e2d; --fg:#e4ebf3; --muted:#93a2b4; --line:#26344a;
-  --accent:#5cc6cf; --accent-soft:#163a42; color-scheme:dark }}
+  --accent:#5cc6cf; --accent-soft:#163a42; --plate:#f3f6f9; color-scheme:dark }}
 :root[data-theme="dark"]{
   --bg:#0d1420; --surface:#141e2d; --fg:#e4ebf3; --muted:#93a2b4; --line:#26344a;
-  --accent:#5cc6cf; --accent-soft:#163a42; color-scheme:dark }
+  --accent:#5cc6cf; --accent-soft:#163a42; --plate:#f3f6f9; color-scheme:dark }
 body{background:var(--bg);color:var(--fg);font-family:var(--body);font-size:15px;line-height:1.6}
-.wrap{max-width:860px;margin:0 auto;padding-inline:20px;padding-block:20px 56px;display:flex;flex-direction:column;gap:44px}
+.wrap{max-width:860px;margin:0 auto;padding-inline:20px;padding-block:20px 56px;display:flex;flex-direction:column;gap:52px}
 .sitenav{display:flex;justify-content:space-between;align-items:center;gap:12px;flex-wrap:wrap;font:500 13px var(--mono);padding-bottom:14px;border-bottom:1px solid var(--line)}
 .sitenav .brand{color:var(--fg);text-decoration:none;font-weight:500}
 .sitenav nav{display:flex;gap:18px}
@@ -32,8 +32,8 @@ body{background:var(--bg);color:var(--fg);font-family:var(--body);font-size:15px
 .sitenav nav a:hover{color:var(--fg)}
 h1,h2,h3{font-family:var(--display);text-wrap:balance;margin:0;line-height:1.15}
 h1{font-size:clamp(32px,6vw,48px);font-weight:800;letter-spacing:-0.02em}
-h2{font-size:22px;font-weight:700}
-h3{font-size:16px;font-weight:700}
+h2{font-size:26px;font-weight:700;letter-spacing:-0.01em;padding-bottom:10px;border-bottom:1px solid var(--line)}
+h3{font-size:18px;font-weight:700}
 p{margin:0;max-width:66ch}
 .eyebrow{font-family:var(--mono);font-size:12px;letter-spacing:.08em;text-transform:uppercase;color:var(--accent)}
 .lede{color:var(--muted);font-size:17px}
@@ -43,27 +43,25 @@ a:focus-visible{outline:2px solid var(--accent);outline-offset:2px}
 .portrait{width:132px;height:132px;border-radius:50%;object-fit:cover;display:block;background:var(--accent-soft);box-shadow:0 0 0 4px var(--surface),0 0 0 5px var(--line)}
 .hero > div{display:flex;flex-direction:column;gap:10px;min-width:0}
 .facts{display:flex;flex-wrap:wrap;gap:6px 20px;font:13px var(--mono);color:var(--muted)}
-section{display:flex;flex-direction:column;gap:16px}
-.bio{display:flex;flex-direction:column;gap:14px}
-.work{display:grid;grid-template-columns:repeat(auto-fit,minmax(240px,1fr));gap:12px}
-.card{background:var(--surface);border:1px solid var(--line);border-radius:10px;padding:18px;display:flex;flex-direction:column;gap:8px;min-width:0}
-.card .tag{font:500 11px var(--mono);letter-spacing:.06em;text-transform:uppercase;color:var(--accent)}
-.card p{font-size:14px;color:var(--muted)}
-.cv{display:flex;flex-direction:column;gap:28px}
-.cv-group{display:flex;flex-direction:column;gap:0}
-.cv-group h3{font:500 12px var(--mono);letter-spacing:.08em;text-transform:uppercase;color:var(--muted);padding-bottom:8px;border-bottom:1px solid var(--line)}
-.entry{display:grid;grid-template-columns:110px 1fr;gap:16px;padding:12px 0;border-bottom:1px solid var(--line)}
-.entry .yr{font:13px var(--mono);color:var(--muted);font-variant-numeric:tabular-nums;padding-top:2px}
-.entry > div{min-width:0;display:flex;flex-direction:column;gap:2px}
-.entry b{font-weight:600}
-.entry span{color:var(--muted);font-size:14px}
-.chips{display:flex;flex-wrap:wrap;gap:8px}
-.chip{font:500 13px var(--mono);padding:4px 10px;border-radius:99px;background:var(--accent-soft);color:var(--accent)}
+section{display:flex;flex-direction:column;gap:28px}
+.prose{display:flex;flex-direction:column;gap:14px}
+.item{display:flex;flex-direction:column;gap:14px}
+.item .meta{font:500 12px var(--mono);letter-spacing:.06em;text-transform:uppercase;color:var(--accent)}
+.split{display:grid;grid-template-columns:1fr 1fr;gap:28px;align-items:center}
+.split > *{min-width:0}
+figure{margin:0;display:flex;flex-direction:column;gap:8px}
+figure img{display:block;width:100%;height:auto;max-width:100%}
+figure.plate img{background:var(--plate);border:1px solid var(--line);border-radius:8px;padding:12px;box-sizing:border-box}
+figure.photo img{border-radius:8px}
+figcaption{font:12.5px/1.5 var(--mono);color:var(--muted)}
+.figs{display:flex;flex-direction:column;gap:20px}
 footer{font-size:13px;color:var(--muted);border-top:1px solid var(--line);padding-top:16px}
+@media (max-width:640px){
+  .split{grid-template-columns:1fr;gap:16px}
+}
 @media (max-width:520px){
   .hero{grid-template-columns:1fr}
   .portrait{width:104px;height:104px}
-  .entry{grid-template-columns:1fr;gap:2px}
 }
 </style>
 <style>body{margin:0}*{box-sizing:border-box}</style>
@@ -88,36 +86,78 @@ footer{font-size:13px;color:var(--muted);border-top:1px solid var(--line);paddin
 
 <section>
   <h2>Bio</h2>
-  <div class="bio">
+  <div class="prose">
     <p>I'm a physics PhD student at the University of Cambridge, where I build multiphysics simulations of contrail formation and evolution. Contrails may account for a large share of aviation's warming effect, and understanding how they form is the first step towards avoiding them. My PhD is part of the Cambridge–Boeing collaboration and is funded by Boeing, alongside a PhD scholarship from the German Academic Scholarship Foundation (Studienstiftung).</p>
     <p>I studied physics at UCL, focusing on condensed matter in my master's year. Along the way I found I enjoyed the computing side most, so I moved to scientific computing for my MPhil at Cambridge. Since then my work has been in numerical methods and high-performance computing, applied to problems in aviation and climate.</p>
-    <p>Outside research I supervise Cambridge undergraduates and tutor, and I've organised speaker events and a college research conference. I also captained the Clare Hall Boat Club. I speak English and German fluently, and some Greek.</p>
+    <p>Outside research I supervise Cambridge undergraduates and tutor, and I've organised speaker events and a college research conference. I was also men's co-captain of the Clare Hall Boat Club. I speak English and German fluently, and some Greek.</p>
   </div>
 </section>
 
 <section>
   <h2>Current work</h2>
-  <div class="work">
-    <div class="card">
-      <div class="tag">PhD research</div>
-      <h3>Multiphysics modelling of contrails</h3>
-      <p>Simulating the exhaust jet behind an aircraft engine, from the nozzle through the mixing that leads to ice formation. I work with Nikos Nikiforakis's group in Cambridge and present the work at the annual Cambridge–Boeing review.</p>
+
+  <div class="item">
+    <div class="meta">PhD · University of Cambridge · 2024–now</div>
+    <h3>Multiphysics modelling of contrail formation</h3>
+    <div class="prose">
+      <p>A contrail starts in the hot, particle-laden exhaust jet behind an engine. As the jet mixes with cold ambient air, water vapour condenses and freezes onto soot and other particles. Which particles activate, and how many ice crystals form, decides how long the contrail lasts and how much it warms the climate.</p>
+      <p>I simulate this process from the engine nozzle onwards. The model solves the compressible flow of the air–vapour mixture together with separate particle phases for soot, sulfates and water droplets, using adaptive mesh refinement and large-eddy simulation on the CSD3 supercomputer in Cambridge. I validate it step by step, from plane jets to round jets to particle-laden jets, and I'm comparing it one-to-one with contrails produced in a cold-chamber lab facility at the University of Toronto.</p>
+      <p>The goal is a model that links engine and exhaust conditions to the contrail they produce, so that cleaner engines and contrail-avoiding flight paths can be designed with confidence. The work is part of the Cambridge–Boeing collaboration, with Nikos Nikiforakis's group in Cambridge.</p>
     </div>
-    <div class="card">
-      <div class="tag">Paper in preparation</div>
-      <h3>Particle-laden jets</h3>
-      <p>A numerical model for jets carrying soot, sulfate and water-droplet particles, validated step by step from plane jets to round jets. A follow-up will add an ice model to capture contrail formation.</p>
+    <div class="figs">
+      <figure class="plate">
+        <img src="soot-vortices.png" alt="Simulation of a two-dimensional jet breaking up into vortices, with soot carried along the vortex edges" width="1632" height="425" loading="lazy">
+        <figcaption>Soot (grey) and vorticity (blue) in a simulated jet. Instabilities roll the shear layer into vortices that stretch and carry the soot downstream.</figcaption>
+      </figure>
+      <figure class="plate">
+        <img src="round-jet.png" alt="Three-dimensional round jet becoming turbulent downstream of the nozzle" width="1466" height="276" loading="lazy">
+        <figcaption>A three-dimensional round jet becoming turbulent as it leaves the nozzle.</figcaption>
+      </figure>
     </div>
-    <div class="card">
-      <div class="tag">Collaboration</div>
-      <h3>Lab contrails, simulated one-to-one</h3>
-      <p>Working with a University of Toronto group whose cold-chamber facility produces contrails in the lab, so we can compare simulation and experiment directly.</p>
+  </div>
+
+  <div class="item">
+    <div class="meta">Cambridge University German Society</div>
+    <h3>Speakers' Officer</h3>
+    <div class="prose">
+      <p>I'm the Speakers' Officer of the Cambridge University German Society, where I invite and host guest speakers. Past guests include Volkmar Denner, former CEO of Bosch.</p>
     </div>
-    <div class="card">
-      <div class="tag">Side project</div>
-      <h3>No Contrail Guide</h3>
-      <p>This website. It helps travellers choose departure times and aircraft that keep their flight's contrails out of the night sky. <a href="index.html">Try the guide</a>.</p>
+    <!-- Photo coming soon. To add it: save it as german-society.jpg next to this file and replace this comment with:
+    <figure class="photo"><img src="german-society.jpg" alt="Describe the photo" loading="lazy"><figcaption>Caption here.</figcaption></figure>
+    -->
+  </div>
+</section>
+
+<section>
+  <h2>Past work</h2>
+
+  <div class="item split">
+    <div class="item">
+      <div class="meta">MPhil in Scientific Computing · Cambridge</div>
+      <h3>Lightning strikes on aircraft</h3>
+      <div class="prose">
+        <p>Modern airliners are built from carbon-fibre composites, which conduct electricity far worse than aluminium. To survive a lightning strike, they carry a lightning strike protection (LSP) layer such as an expanded copper foil mesh that spreads the current away from the attachment point.</p>
+        <p>For my master's project I simulated a lightning arc attaching to a protected panel and modelled how the current flows through the mesh.</p>
+      </div>
     </div>
+    <figure class="plate">
+      <img src="lightning-ecf.jpg" alt="Simulated lightning arc column above a panel with an expanded copper foil mesh" width="908" height="724" loading="lazy">
+      <figcaption>A simulated lightning arc above a composite panel with an expanded copper foil protection layer.</figcaption>
+    </figure>
+  </div>
+
+  <div class="item split">
+    <div class="item">
+      <div class="meta">Clare Hall Boat Club · 2025–26</div>
+      <h3>Men's co-captain</h3>
+      <div class="prose">
+        <p>I was men's co-captain of the Clare Hall Boat Club for the 2025–26 season.</p>
+      </div>
+    </div>
+    <figure class="photo">
+      <img src="clare-hall-bc.jpg" alt="Clare Hall Boat Club crew standing behind their boat at a regatta" width="1600" height="1068" loading="lazy">
+      <figcaption>The Clare Hall crew at a regatta.</figcaption>
+    </figure>
   </div>
 </section>
 
