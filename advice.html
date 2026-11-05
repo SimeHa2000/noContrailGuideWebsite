@@ -1,0 +1,161 @@
+<!doctype html>
+<html lang="en">
+<head>
+<title>How to Fly Cleaner</title>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<meta name="description" content="Five rules for picking the flight with the smallest climate impact: fly direct, fly by day, fly modern aircraft, and more.">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Schibsted+Grotesk:wght@500;700;800&family=IBM+Plex+Sans:ital,wght@0,400;0,500;0,600;1,400&family=IBM+Plex+Mono:wght@400;500&display=swap">
+<style>
+/* Layout: article column (~66ch) with the site nav; each rule is a numbered block in priority order, big rules first, nuanced rules after a divider. */
+:root{
+  --bg:#f5f7fa; --surface:#ffffff; --fg:#14202e; --muted:#5a6878; --line:#d9e0e8;
+  --accent:#0b7a85; --accent-soft:#e1f2f3; --night:#2b3a67;
+  --display:"Schibsted Grotesk", "Helvetica Neue", Arial, sans-serif;
+  --body:"IBM Plex Sans", system-ui, -apple-system, "Segoe UI", sans-serif;
+  --mono:"IBM Plex Mono", ui-monospace, Menlo, Consolas, monospace;
+}
+@media (prefers-color-scheme: dark){ :root:not([data-theme="light"]){
+  --bg:#0d1420; --surface:#141e2d; --fg:#e4ebf3; --muted:#93a2b4; --line:#26344a;
+  --accent:#5cc6cf; --accent-soft:#163a42; --night:#8a9be0; color-scheme:dark }}
+:root[data-theme="dark"]{
+  --bg:#0d1420; --surface:#141e2d; --fg:#e4ebf3; --muted:#93a2b4; --line:#26344a;
+  --accent:#5cc6cf; --accent-soft:#163a42; --night:#8a9be0; color-scheme:dark }
+body{background:var(--bg);color:var(--fg);font-family:var(--body);font-size:16px;line-height:1.65}
+.wrap{max-width:860px;margin:0 auto;padding-inline:20px;padding-block:20px 56px;display:flex;flex-direction:column;gap:44px}
+.sitenav{display:flex;justify-content:space-between;align-items:center;gap:12px;flex-wrap:wrap;font:500 13px var(--mono);padding-bottom:14px;border-bottom:1px solid var(--line)}
+.sitenav .brand{color:var(--fg);text-decoration:none;font-weight:500}
+.sitenav nav{display:flex;gap:18px;flex-wrap:wrap}
+.sitenav nav a{color:var(--muted);text-decoration:none}
+.sitenav nav a[aria-current]{color:var(--accent)}
+.sitenav nav a:hover{color:var(--fg)}
+article{max-width:680px;display:flex;flex-direction:column;gap:44px}
+h1,h2,h3{font-family:var(--display);text-wrap:balance;margin:0;line-height:1.15}
+h1{font-size:clamp(32px,6vw,50px);font-weight:800;letter-spacing:-0.02em}
+h2{font-size:clamp(22px,3.6vw,28px);font-weight:700;letter-spacing:-0.01em}
+p{margin:0;max-width:66ch}
+a{color:var(--accent)}
+a:focus-visible{outline:2px solid var(--accent);outline-offset:2px}
+.eyebrow{font:500 12px var(--mono);letter-spacing:.08em;text-transform:uppercase;color:var(--accent)}
+header{display:flex;flex-direction:column;gap:14px}
+.lede{font-size:19px;color:var(--muted);line-height:1.55}
+.byline{font:13px var(--mono);color:var(--muted)}
+.byline a{color:inherit}
+.rule{display:grid;grid-template-columns:64px 1fr;gap:4px 18px}
+.rule .n{font:800 46px/1 var(--display);color:var(--accent);letter-spacing:-0.03em}
+.rule .body{display:flex;flex-direction:column;gap:14px;min-width:0}
+.do{border-left:3px solid var(--accent);background:var(--accent-soft);padding:10px 14px;border-radius:0 6px 6px 0;font-weight:500}
+.do b{font:500 11px var(--mono);letter-spacing:.08em;text-transform:uppercase;color:var(--accent);display:block;margin-bottom:2px}
+.stat{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:12px}
+.stat > div{border-top:2px solid var(--night);padding-top:8px;display:flex;flex-direction:column;gap:2px}
+.stat .big{font:700 30px/1.1 var(--display);color:var(--night)}
+.stat .small{font-size:14px;color:var(--muted)}
+.divider{display:flex;flex-direction:column;gap:8px;padding-top:20px;border-top:1px solid var(--line)}
+.divider p{color:var(--muted)}
+.rule.minor .n{color:var(--muted);font-size:36px}
+.sources{font-size:14px;color:var(--muted);display:flex;flex-direction:column;gap:8px;border-top:1px solid var(--line);padding-top:18px}
+.sources ol{margin:0;padding-left:20px;display:flex;flex-direction:column;gap:4px}
+footer{font-size:13px;color:var(--muted);border-top:1px solid var(--line);padding-top:16px}
+@media (max-width:520px){
+  .rule{grid-template-columns:1fr}
+  .rule .n{font-size:38px}
+  .stat{grid-template-columns:1fr}
+}
+</style>
+<style>body{margin:0}*{box-sizing:border-box}</style>
+</head>
+<body>
+
+<div class="wrap">
+<div class="sitenav">
+  <a class="brand" href="index.html">nocontrailguide.org</a>
+  <nav aria-label="Site"><a href="index.html">Flight guide</a><a href="advice.html" aria-current="page">How to fly</a><a href="about.html">About</a></nav>
+</div>
+
+<article>
+<header>
+  <div class="eyebrow">Advice</div>
+  <h1>How to pick the flight with the smallest climate impact</h1>
+  <p class="lede">Two tickets for the same trip can differ a lot in how much they warm the planet. Most of that difference comes down to three choices you make when you book: the route, the time of day, and the aircraft.</p>
+  <div class="byline">By <a href="about.html">Simeon Hatzopoulos</a> · contrail researcher, University of Cambridge</div>
+</header>
+
+<section class="rule">
+  <div class="n">1</div>
+  <div class="body">
+    <h2>Fly direct, and take the train for short hops</h2>
+    <p>Take-off and climb are the most fuel-hungry parts of any flight. A connection adds a second take-off and climb, and usually extra distance, so a one-stop itinerary almost always burns more than the nonstop.</p>
+    <p>The worst offenders are short feeder flights into a hub, especially within Europe. Stuttgart to Frankfurt for a long-haul connection is a classic example. The ICE train covers it in a little over an hour and stops at Frankfurt Airport itself. Lufthansa even sells it as part of your ticket, with a flight number, through its Express Rail service.</p>
+    <div class="do"><b>Do this</b>Pick the nonstop whenever one exists. If your first leg is under about 500 km and there's a fast train, take the train to the hub.</div>
+  </div>
+</section>
+
+<section class="rule">
+  <div class="n">2</div>
+  <div class="body">
+    <h2>Fly during the day</h2>
+    <p>Contrails have two effects. They trap heat rising from the ground, and in daylight they also reflect sunlight back to space, which partly cancels the warming. At night only the warming remains. A contrail that forms in the evening and lingers after sunset does the most harm.</p>
+    <div class="stat">
+      <div><span class="big">25% → 60–80%</span><span class="small">Night flights are a quarter of daily traffic but cause most of the contrail warming.</span></div>
+      <div><span class="big">22% → 50%</span><span class="small">Winter flights are a fifth of the year's traffic but cause half of its contrail warming.</span></div>
+    </div>
+    <p>Those figures come from a study of flights over the UK (Stuber et al., <i>Nature</i>, 2006). Winter matters because persistent contrails form more often in the cold, humid upper air of the northern winter, and the nights are long.</p>
+    <div class="do"><b>Do this</b>Choose a departure that keeps most of your time at cruise altitude in daylight. Avoid red-eyes and evening departures when you can, especially in winter. The <a href="index.html">flight guide</a> shows this for your route, hour by hour.</div>
+  </div>
+</section>
+
+<section class="rule">
+  <div class="n">3</div>
+  <div class="body">
+    <h2>Fly modern aircraft with two efficient engines</h2>
+    <p>Newer twin-engine aircraft such as the Airbus A320neo and A350, the Boeing 737 MAX and the 787 burn far less fuel per seat than older types, and much less than four-engine jets like the Boeing 747 and Airbus A380. In an analysis of transatlantic airlines by the International Council on Clean Transportation (ICCT), the least efficient airline burned 63% more fuel per passenger-kilometre than the most efficient. The main reason was that more than half its flights used 747s and A380s.</p>
+    <p>This is where low-cost carriers do surprisingly well. They tend to fly young fleets of a single modern type, fit more seats into each aircraft and fill nearly all of them. Fuel per passenger falls on all three counts. Premium cabins work the other way: a business-class seat takes up much more space, and so more fuel, than an economy seat.</p>
+    <p>Engine choice matters for contrails too. Lean-burn engines such as GE's LEAP, GEnx and GE9X emit far less soot. Less soot means fewer, larger ice crystals, so the contrail is thinner and fades sooner.</p>
+    <div class="do"><b>Do this</b>Check the aircraft type before you book. Prefer a recent twin-engine type, fly economy, and don't rule out a budget airline.</div>
+  </div>
+</section>
+
+<div class="divider">
+  <div class="eyebrow">Going further</div>
+  <p>The first three rules cover most of the difference. These two are worth doing too, but they come with caveats.</p>
+</div>
+
+<section class="rule minor">
+  <div class="n">4</div>
+  <div class="body">
+    <h2>Fly with airlines trialling contrail avoidance</h2>
+    <p>Some airlines and air traffic controllers now make small altitude changes to steer flights around the patches of cold, humid air where persistent contrails form. Cathay Pacific runs trials with Google across Asia and the Pacific. Operation Blue Skies, led by Google with NATS and the UK government, starts adjusting flights over the North Atlantic in winter 2026–27. In an airline trial in the US, flights that followed the avoidance plan formed 62% fewer contrails, with no measurable extra fuel burn.</p>
+    <p>The caveat: trials cover only some flights, so booking with a participating airline doesn't guarantee your flight will be rerouted. Choosing those airlines still supports the work and helps it scale.</p>
+    <div class="do"><b>Do this</b>When two options are otherwise equal, pick the airline that is doing contrail avoidance.</div>
+  </div>
+</section>
+
+<section class="rule minor">
+  <div class="n">5</div>
+  <div class="body">
+    <h2>Pay extra to compensate for what's left</h2>
+    <p>Once you've chosen the cleanest flight, you can pay to compensate for the emissions that remain. This comes last because compensation can't undo what has already been emitted, and the quality of schemes varies a lot.</p>
+    <p>Two things to look for. First, pick a scheme with independent certification, such as Gold Standard, or one that funds sustainable aviation fuel directly. Second, check whether the calculator includes the non-CO₂ effects such as contrails. Many count only CO₂, which can leave out a large part of a flight's warming.</p>
+    <div class="do"><b>Do this</b>Add certified compensation to your booking, using a calculator that accounts for non-CO₂ effects.</div>
+  </div>
+</section>
+
+<div class="sources">
+  <div class="eyebrow">Sources</div>
+  <ol>
+    <li>Stuber et al. (2006), <a href="https://centaur.reading.ac.uk/5273/" target="_blank" rel="noopener">The importance of the diurnal and annual cycle of air traffic for contrail radiative forcing</a>, <i>Nature</i> 441.</li>
+    <li>ICCT, <a href="https://theicct.org/wp-content/uploads/2021/06/ICCT_transatlantic-airline-ranking-2014_0.pdf" target="_blank" rel="noopener">Transatlantic airline fuel efficiency ranking</a>, and its 2017 update.</li>
+    <li>Google Research, <a href="https://research.google/pubs/efficacy-of-scalable-airline-led-contrail-avoidance/" target="_blank" rel="noopener">Efficacy of scalable airline-led contrail avoidance</a> (2026).</li>
+    <li>Google, <a href="https://blog.google/innovation-and-ai/models-and-research/google-research/contrail-avoidance-ultra-long-haul-flights/" target="_blank" rel="noopener">contrail avoidance trial with Cathay Pacific</a> (2026).</li>
+    <li>Imperial College London, <a href="https://www.imperial.ac.uk/news/articles/natural-sciences/physics/2026/worlds-first-trial-to-test-if-flightpath-changes-could-cut-aviations-climate-impact-/" target="_blank" rel="noopener">Operation Blue Skies announcement</a> (2026).</li>
+    <li>aeroTELEGRAPH, <a href="https://www.aerotelegraph.com/lufthansa-baut-express-rail-angebot-aus" target="_blank" rel="noopener">Lufthansa expands its Express Rail service</a>.</li>
+  </ol>
+</div>
+</article>
+
+<footer>© 2026 Simeon Hatzopoulos · nocontrailguide.org</footer>
+</div>
+
+</body>
+</html>
