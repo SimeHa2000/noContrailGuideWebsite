@@ -6,54 +6,50 @@
 <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
 <meta name="description" content="Simeon Hatzopoulos, physics PhD researcher at the University of Cambridge working on contrail simulation.">
 <link rel="preconnect" href="https://fonts.googleapis.com">
-<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Schibsted+Grotesk:wght@500;700;800&family=IBM+Plex+Sans:wght@400;500;600&family=IBM+Plex+Mono:wght@400;500&display=swap">
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Google+Sans+Flex:wght@400;500;700&display=swap">
 <style>
 /* Layout: same single column and tokens as the flight guide; work items are text + figure rows with mono captions. */
 :root{
-  --bg:#f5f7fa; --surface:#ffffff; --fg:#14202e; --muted:#5a6878; --line:#d9e0e8;
-  --accent:#0b7a85; --accent-soft:#e1f2f3; --plate:#ffffff;
-  --display:"Schibsted Grotesk", "Helvetica Neue", Arial, sans-serif;
-  --body:"IBM Plex Sans", system-ui, -apple-system, "Segoe UI", sans-serif;
-  --mono:"IBM Plex Mono", ui-monospace, Menlo, Consolas, monospace;
+  --sky-1:#9BE8FF; --sky-2:#5BC9FF; --sky-3:#00B8FF; --blue:#4A7BFF; --sun:#FEFF50;
+  --bg:#FFFFFF; --surface:#FFFFFF; --fg:#0E2148; --muted:#4F6385; --line:#D6EAF7; --wash:#E8F8FF;
+  --accent:#2B5CE6; --accent-soft:#E8F8FF; --plate:#FFFFFF; --night:#4A7BFF;
+  --display:"Google Sans Flex","Google Sans","Product Sans",system-ui,-apple-system,"Segoe UI",Roboto,sans-serif;
+  --body:var(--display); --mono:var(--display);
+  color-scheme:light;
 }
-@media (prefers-color-scheme: dark){ :root:not([data-theme="light"]){
-  --bg:#0d1420; --surface:#141e2d; --fg:#e4ebf3; --muted:#93a2b4; --line:#26344a;
-  --accent:#5cc6cf; --accent-soft:#163a42; --plate:#f3f6f9; color-scheme:dark }}
-:root[data-theme="dark"]{
-  --bg:#0d1420; --surface:#141e2d; --fg:#e4ebf3; --muted:#93a2b4; --line:#26344a;
-  --accent:#5cc6cf; --accent-soft:#163a42; --plate:#f3f6f9; color-scheme:dark }
-body{background:var(--bg);color:var(--fg);font-family:var(--body);font-size:15px;line-height:1.6}
+body{background:linear-gradient(180deg,var(--sky-1) 0,var(--wash) 260px,var(--bg) 560px) no-repeat,var(--bg);color:var(--fg);font-family:var(--body);font-size:16px;line-height:1.65;font-variant-numeric:tabular-nums}
 .wrap{max-width:860px;margin:0 auto;padding-inline:20px;padding-block:20px 56px;display:flex;flex-direction:column;gap:52px}
-.sitenav{display:flex;justify-content:space-between;align-items:center;gap:12px;flex-wrap:wrap;font:500 13px var(--mono);padding-bottom:14px;border-bottom:1px solid var(--line)}
-.sitenav .brand{color:var(--fg);text-decoration:none;font-weight:500}
-.sitenav nav{display:flex;gap:18px}
-.sitenav nav a{color:var(--muted);text-decoration:none}
-.sitenav nav a[aria-current]{color:var(--accent)}
-.sitenav nav a:hover{color:var(--fg)}
-h1,h2,h3{font-family:var(--display);text-wrap:balance;margin:0;line-height:1.15}
+.sitenav{display:flex;justify-content:space-between;align-items:center;gap:12px;flex-wrap:wrap;font-size:15px}
+.sitenav .brand{display:flex;align-items:center;gap:10px;color:var(--fg);text-decoration:none;font-weight:700}
+.sun{width:22px;height:22px;border-radius:50%;background:var(--sun);box-shadow:0 0 0 5px color-mix(in srgb,var(--sun) 35%,transparent)}
+.sitenav nav{display:flex;gap:20px;flex-wrap:wrap}
+.sitenav nav a{color:var(--fg);text-decoration:none;opacity:.7}
+.sitenav nav a[aria-current]{opacity:1;font-weight:700}
+.sitenav nav a:hover{opacity:1}
+h1,h2,h3{font-family:var(--display);font-weight:700;text-wrap:balance;margin:0;line-height:1.15}
 h1{font-size:clamp(32px,6vw,48px);font-weight:800;letter-spacing:-0.02em}
 h2{font-size:26px;font-weight:700;letter-spacing:-0.01em;padding-bottom:10px;border-bottom:1px solid var(--line)}
 h3{font-size:18px;font-weight:700}
 p{margin:0;max-width:66ch}
-.eyebrow{font-family:var(--mono);font-size:12px;letter-spacing:.08em;text-transform:uppercase;color:var(--accent)}
+.eyebrow{font-size:14px;font-weight:700;color:var(--blue)}
 .lede{color:var(--muted);font-size:17px}
 a{color:var(--accent)}
 a:focus-visible{outline:2px solid var(--accent);outline-offset:2px}
 .hero{display:grid;grid-template-columns:auto 1fr;gap:24px;align-items:center}
-.portrait{width:132px;height:132px;border-radius:50%;object-fit:cover;display:block;background:var(--accent-soft);box-shadow:0 0 0 4px var(--surface),0 0 0 5px var(--line)}
+.portrait{width:132px;height:132px;border-radius:50%;object-fit:cover;display:block;background:var(--accent-soft);box-shadow:0 0 0 5px var(--sun)}
 .hero > div{display:flex;flex-direction:column;gap:10px;min-width:0}
 .facts{display:flex;flex-wrap:wrap;gap:6px 20px;font:13px var(--mono);color:var(--muted)}
 section{display:flex;flex-direction:column;gap:28px}
 .prose{display:flex;flex-direction:column;gap:14px}
 .item{display:flex;flex-direction:column;gap:14px}
-.item .meta{font:500 12px var(--mono);letter-spacing:.06em;text-transform:uppercase;color:var(--accent)}
+.item .meta{font-size:14px;font-weight:700;color:var(--blue)}
 .split{display:grid;grid-template-columns:1fr 1fr;gap:28px;align-items:center}
 .split > *{min-width:0}
 figure{margin:0;display:flex;flex-direction:column;gap:8px}
 figure img{display:block;width:100%;height:auto;max-width:100%}
 figure.plate img{background:var(--plate);border:1px solid var(--line);border-radius:8px;padding:12px;box-sizing:border-box}
 figure.photo img{border-radius:8px}
-figcaption{font:12.5px/1.5 var(--mono);color:var(--muted)}
+figcaption{font-size:14px;line-height:1.5;color:var(--muted)}
 .figs{display:flex;flex-direction:column;gap:20px}
 footer{font-size:13px;color:var(--muted);border-top:1px solid var(--line);padding-top:16px}
 @media (max-width:640px){
@@ -70,7 +66,7 @@ footer{font-size:13px;color:var(--muted);border-top:1px solid var(--line);paddin
 
 <div class="wrap">
 <div class="sitenav">
-  <a class="brand" href="index.html">nocontrailguide.org</a>
+  <a class="brand" href="index.html"><span class="sun" aria-hidden="true"></span>nocontrailguide.org</a>
   <nav aria-label="Site"><a href="index.html">Flight guide</a><a href="advice.html">How to fly</a><a href="about.html" aria-current="page">About</a></nav>
 </div>
 

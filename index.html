@@ -4,90 +4,84 @@
 <title>No Contrail Guide</title>
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
-<meta name="description" content="Choose flights that minimise contrail warming: departure times, aircraft and airline trials for your route.">
+<meta name="description" content="Find the cleanest time to fly: see which departure times keep your flight, and its contrails, in daylight.">
 <link rel="preconnect" href="https://fonts.googleapis.com">
-<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Schibsted+Grotesk:wght@500;700;800&family=IBM+Plex+Sans:wght@400;500;600&family=IBM+Plex+Mono:wght@400;500&display=swap">
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Google+Sans+Flex:wght@400;500;700&display=swap">
 <style>
-/* Layout: one narrow column; the hero is the route planner itself, the departure-hour chart is the centrepiece. */
+/* Layout: clear-sky wash at the top holding the trip form; results (verdict cards, then chart) below; a deliberately light-only "clear sky" look. */
 :root{
-  --bg:#f5f7fa; --surface:#ffffff; --fg:#14202e; --muted:#5a6878; --line:#d9e0e8;
-  --accent:#0b7a85; --accent-soft:#e1f2f3;
-  --day:#9fd3dc; --dusk:#e0973c; --night:#2b3a67; --good:#1d8a52; --warn:#b4621a;
-  --display:"Schibsted Grotesk", "Helvetica Neue", Arial, sans-serif;
-  --body:"IBM Plex Sans", system-ui, -apple-system, "Segoe UI", sans-serif;
-  --mono:"IBM Plex Mono", ui-monospace, Menlo, Consolas, monospace;
+  --sky-1:#9BE8FF; --sky-2:#5BC9FF; --sky-3:#00B8FF; --blue:#4A7BFF; --sun:#FEFF50;
+  --ink:#0E2148; --muted:#4F6385; --line:#D6EAF7; --bg:#FFFFFF; --wash:#E8F8FF; --link:#2B5CE6;
+  --font:"Google Sans Flex","Google Sans","Product Sans",system-ui,-apple-system,"Segoe UI",Roboto,sans-serif;
+  color-scheme:light;
 }
-@media (prefers-color-scheme: dark){ :root:not([data-theme="light"]){
-  --bg:#0d1420; --surface:#141e2d; --fg:#e4ebf3; --muted:#93a2b4; --line:#26344a;
-  --accent:#5cc6cf; --accent-soft:#163a42;
-  --day:#4f8e9a; --dusk:#e8a24f; --night:#8a9be0; --good:#4cc283; --warn:#e8a24f; color-scheme:dark }}
-:root[data-theme="dark"]{
-  --bg:#0d1420; --surface:#141e2d; --fg:#e4ebf3; --muted:#93a2b4; --line:#26344a;
-  --accent:#5cc6cf; --accent-soft:#163a42;
-  --day:#4f8e9a; --dusk:#e8a24f; --night:#8a9be0; --good:#4cc283; --warn:#e8a24f; color-scheme:dark }
-body{background:var(--bg);color:var(--fg);font-family:var(--body);font-size:15px;line-height:1.55}
-.wrap{max-width:860px;margin:0 auto;padding-inline:20px;padding-block:28px 56px;display:flex;flex-direction:column;gap:40px}
-h1,h2,h3{font-family:var(--display);text-wrap:balance;margin:0;line-height:1.15}
-h1{font-size:clamp(30px,6vw,46px);font-weight:800;letter-spacing:-0.02em}
-h2{font-size:22px;font-weight:700}
-h3{font-size:16px;font-weight:700}
-p{margin:0;max-width:66ch}
-.eyebrow{font-family:var(--mono);font-size:12px;letter-spacing:.08em;text-transform:uppercase;color:var(--accent)}
-.lede{color:var(--muted);font-size:16px}
-header{display:flex;flex-direction:column;gap:12px}
-section{display:flex;flex-direction:column;gap:16px}
-.panel{background:var(--surface);border:1px solid var(--line);border-radius:10px;padding:20px}
+body{background:linear-gradient(180deg,var(--sky-1) 0,var(--wash) 300px,var(--bg) 640px) no-repeat,var(--bg);color:var(--ink);font-family:var(--font);font-size:16px;line-height:1.6;font-variant-numeric:tabular-nums}
+.wrap{max-width:880px;margin:0 auto;padding-inline:20px;padding-block:20px 64px;display:flex;flex-direction:column;gap:36px}
+.sitenav{display:flex;justify-content:space-between;align-items:center;gap:12px;flex-wrap:wrap;font-size:15px}
+.brand{display:flex;align-items:center;gap:10px;color:var(--ink);text-decoration:none;font-weight:700}
+.sun{width:22px;height:22px;border-radius:50%;background:var(--sun);box-shadow:0 0 0 5px color-mix(in srgb,var(--sun) 35%,transparent)}
+.sitenav nav{display:flex;gap:20px;flex-wrap:wrap}
+.sitenav nav a{color:var(--ink);text-decoration:none;opacity:.7}
+.sitenav nav a[aria-current]{opacity:1;font-weight:700}
+.sitenav nav a:hover{opacity:1}
+h1,h2,h3{text-wrap:balance;margin:0;line-height:1.15;font-weight:700}
+h1{font-size:clamp(32px,6vw,52px);letter-spacing:-0.025em}
+h2{font-size:24px;letter-spacing:-0.01em}
+p{margin:0;max-width:64ch}
+a{color:var(--link)}
+:focus-visible{outline:3px solid var(--blue);outline-offset:2px}
+header{display:flex;flex-direction:column;gap:10px;padding-top:12px}
+.lede{font-size:18px;color:var(--muted)}
+.card{background:var(--bg);border-radius:18px;padding:20px;box-shadow:0 1px 2px rgba(14,33,72,.06),0 8px 24px rgba(74,123,255,.10)}
 .form{display:grid;grid-template-columns:1fr auto 1fr;gap:12px;align-items:end}
-.form .row2{grid-column:1/-1;display:grid;grid-template-columns:repeat(auto-fit,minmax(150px,1fr));gap:12px}
-label{display:flex;flex-direction:column;gap:6px;font-size:12px;font-family:var(--mono);letter-spacing:.05em;text-transform:uppercase;color:var(--muted);min-width:0}
-input,select{font:500 16px var(--body);color:var(--fg);background:var(--bg);border:1px solid var(--line);border-radius:6px;padding:10px 12px;width:100%;box-sizing:border-box;min-width:0}
-input:focus-visible,select:focus-visible,button:focus-visible{outline:2px solid var(--accent);outline-offset:2px}
-button{font:600 14px var(--body);cursor:pointer;border-radius:6px;border:1px solid var(--line);background:var(--surface);color:var(--fg);padding:10px 14px}
-button.swap{padding:10px;font-family:var(--mono)}
-button.primary{background:var(--accent);border-color:var(--accent);color:var(--bg)}
-.err{color:var(--warn);font-size:14px}
-.summary{display:flex;flex-wrap:wrap;gap:8px 24px;font-family:var(--mono);font-size:13px;color:var(--muted)}
-.summary b{color:var(--fg);font-weight:500}
+.form .row2{grid-column:1/-1;display:grid;grid-template-columns:repeat(auto-fit,minmax(160px,1fr));gap:12px}
+label{display:flex;flex-direction:column;gap:6px;font-size:14px;font-weight:500;color:var(--muted);min-width:0}
+input,select{font:500 16px var(--font);color:var(--ink);background:var(--wash);border:1px solid transparent;border-radius:10px;padding:11px 12px;width:100%;box-sizing:border-box;min-width:0}
+input:hover,select:hover{border-color:var(--sky-2)}
+button{font:700 15px var(--font);cursor:pointer;border-radius:999px;border:0;background:var(--wash);color:var(--ink);padding:11px 18px}
+button:hover{background:var(--sky-1)}
+button.swap{padding:11px 14px}
+button.primary{background:var(--blue);color:#fff}
+button.primary:hover{background:var(--link)}
+.err{color:#B42318;font-size:14px;margin-top:10px}
+.routehead{display:flex;flex-direction:column;gap:4px}
+.summary{display:flex;flex-wrap:wrap;gap:4px 22px;font-size:14px;color:var(--muted)}
+.summary b{color:var(--ink);font-weight:500}
+.verdict{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:12px}
+.v{border-radius:16px;padding:16px 18px;display:flex;flex-direction:column;gap:4px;min-width:0}
+.v .lab{font-size:14px;font-weight:700}
+.v .big{font-size:26px;font-weight:700;letter-spacing:-0.01em;line-height:1.2}
+.v .note{font-size:14px}
+.v.best{background:var(--sun);color:var(--ink)}
+.v.worst{background:var(--blue);color:#fff}
+.v.yours{background:var(--wash);color:var(--ink)}
+.v.yours .note{color:var(--muted)}
 .chart-wrap{overflow-x:auto}
-svg text{font-family:var(--mono)}
-.legend{display:flex;flex-wrap:wrap;gap:14px;font-size:13px;color:var(--muted)}
-.sw{display:inline-block;width:12px;height:12px;border-radius:2px;margin-right:6px;vertical-align:-1px}
-.verdict{display:grid;grid-template-columns:repeat(auto-fit,minmax(220px,1fr));gap:12px}
-.verdict > div{border-top:3px solid var(--line);padding-top:10px;display:flex;flex-direction:column;gap:4px;min-width:0}
-.verdict .best{border-color:var(--good)} .verdict .worst{border-color:var(--warn)}
-.verdict .big{font-family:var(--display);font-size:24px;font-weight:700}
-.flags{display:flex;flex-direction:column;gap:10px}
-.flag{border-left:3px solid var(--accent);padding:4px 0 4px 12px}
-.flag.hot{border-color:var(--warn)}
-table{border-collapse:collapse;width:100%;font-size:14px;font-variant-numeric:tabular-nums}
-th{text-align:left;font:500 11px var(--mono);letter-spacing:.06em;text-transform:uppercase;color:var(--muted);padding:8px 8px;border-bottom:1px solid var(--line)}
-td{padding:8px;border-bottom:1px solid var(--line);vertical-align:middle}
-td input,td select{font-size:14px;padding:6px 8px}
-.pill{display:inline-block;font:500 12px var(--mono);padding:2px 8px;border-radius:99px;white-space:nowrap}
-.pill.low{background:color-mix(in srgb,var(--good) 18%,transparent);color:var(--good)}
-.pill.mid{background:color-mix(in srgb,var(--dusk) 20%,transparent);color:var(--warn)}
-.pill.high{background:color-mix(in srgb,var(--night) 22%,transparent);color:var(--night)}
-.pill.lean{background:var(--accent-soft);color:var(--accent)}
-.pill.rich{background:transparent;border:1px solid var(--line);color:var(--muted)}
-.rank{font:700 18px var(--display);color:var(--accent)}
-.note{font-size:13px;color:var(--muted)}
-.trials{display:grid;grid-template-columns:repeat(auto-fit,minmax(240px,1fr));gap:12px}
-.trial{border:1px solid var(--line);border-radius:8px;padding:14px;display:flex;flex-direction:column;gap:6px;background:var(--surface);min-width:0}
-.trial.on{border-color:var(--accent);box-shadow:inset 0 0 0 1px var(--accent)}
-.trial .tag{font:500 11px var(--mono);letter-spacing:.06em;text-transform:uppercase;color:var(--accent)}
-.rules{display:flex;flex-direction:column;gap:14px;padding:0;margin:0;list-style:none}
-.rules li{display:grid;grid-template-columns:28px 1fr;gap:10px}
-.rules li span{font:700 18px var(--display);color:var(--accent)}
-footer{font-size:13px;color:var(--muted);border-top:1px solid var(--line);padding-top:16px;display:flex;flex-direction:column;gap:8px}
-a{color:var(--accent)}
+svg text{font-family:var(--font)}
+.legend{display:flex;flex-wrap:wrap;gap:8px 18px;font-size:14px;color:var(--muted);margin-top:8px}
+.sw{display:inline-block;width:12px;height:12px;border-radius:3px;margin-right:6px;vertical-align:-1px}
+.hint{font-size:14px;color:var(--muted);margin-top:6px}
+.more{display:flex;justify-content:space-between;align-items:center;gap:12px 20px;flex-wrap:wrap;background:var(--wash);border-radius:16px;padding:18px 20px}
+.more p{font-size:17px;font-weight:500}
+.more a{font-weight:700;text-decoration:none;white-space:nowrap}
+section{display:flex;flex-direction:column;gap:14px}
 .tbl-wrap{overflow-x:auto}
-.sitenav{display:flex;justify-content:space-between;align-items:center;gap:12px;flex-wrap:wrap;font:500 13px var(--mono);padding-bottom:14px;border-bottom:1px solid var(--line);margin-bottom:-12px}
-.sitenav .brand{color:var(--fg);text-decoration:none}
-.sitenav nav{display:flex;gap:18px}
-.sitenav nav a{color:var(--muted);text-decoration:none}
-.sitenav nav a[aria-current]{color:var(--accent)}
-.sitenav nav a:hover{color:var(--fg)}
+table{border-collapse:collapse;width:100%;font-size:15px}
+th{text-align:left;font-size:13px;font-weight:500;color:var(--muted);padding:8px;border-bottom:1px solid var(--line)}
+td{padding:8px;border-bottom:1px solid var(--line);vertical-align:middle}
+td input,td select{font-size:15px;padding:8px 10px}
+.pill{display:inline-block;font-size:13px;font-weight:700;padding:3px 10px;border-radius:999px;white-space:nowrap}
+.pill.low{background:var(--sun);color:var(--ink)}
+.pill.mid{background:var(--sky-1);color:var(--ink)}
+.pill.high{background:var(--blue);color:#fff}
+.pill.lean{background:var(--wash);color:var(--link)}
+.rank{font-size:20px;font-weight:700;color:var(--blue)}
+.std{font-size:14px;color:var(--muted)}
+.actions{display:flex;gap:8px;margin-top:14px;flex-wrap:wrap}
+footer{font-size:14px;color:var(--muted);border-top:1px solid var(--line);padding-top:18px;display:flex;flex-direction:column;gap:8px}
+@media (max-width:640px){ .verdict{grid-template-columns:1fr} }
 @media (max-width:560px){ .form{grid-template-columns:1fr} button.swap{justify-self:start} }
+@media (prefers-reduced-motion:no-preference){ .v,.card{transition:transform .2s} }
 </style>
 <style>body{margin:0}*{box-sizing:border-box}</style>
 </head>
@@ -95,16 +89,16 @@ a{color:var(--accent)}
 
 <div class="wrap">
 <div class="sitenav">
-  <a class="brand" href="index.html">nocontrailguide.org</a>
+  <a class="brand" href="index.html"><span class="sun" aria-hidden="true"></span>nocontrailguide.org</a>
   <nav aria-label="Site"><a href="index.html" aria-current="page">Flight guide</a><a href="advice.html">How to fly</a><a href="about.html">About</a></nav>
 </div>
+
 <header>
-  <div class="eyebrow">nocontrailguide.org · prototype</div>
-  <h1>Pick the flight that leaves the smallest trail</h1>
-  <p class="lede">Contrails that linger after dark trap heat and do no cooling. Enter your route and the date you plan to fly, and the guide shows which departure times keep your cruise in daylight, which aircraft burn cleaner, and whether airlines on your route are trialling contrail avoidance.</p>
+  <h1>Find the cleanest time to fly</h1>
+  <p class="lede">Contrails that linger after dark warm the planet the most. Enter your trip to see which departure times keep your flight in daylight.</p>
 </header>
 
-<section class="panel" aria-label="Your trip">
+<div class="card" aria-label="Your trip">
   <form id="trip" class="form" autocomplete="off">
     <label for="orig">From
       <input id="orig" list="airports" value="LHR — London Heathrow">
@@ -117,91 +111,55 @@ a{color:var(--accent)}
       <label for="date">Travel date
         <input id="date" type="date" value="2026-12-10">
       </label>
-      <label for="hour">Departure you're eyeing
+      <label for="hour">Departure time you're looking at
         <input id="hour" type="time" value="18:30">
       </label>
     </div>
     <datalist id="airports"></datalist>
   </form>
   <p class="err" id="err" hidden></p>
-</section>
+</div>
 
 <section id="results">
-  <div>
-    <h2 id="routeTitle">Departure time</h2>
-  </div>
-  <div class="summary" id="summary"></div>
-  <div class="panel">
-    <div class="chart-wrap"><svg id="chart" viewBox="0 0 720 260" width="100%" role="img" aria-label="Share of cruise whose contrails would live in darkness, by departure hour"></svg></div>
-    <div class="legend">
-      <span><i class="sw" style="background:var(--night)"></i>Contrail forms at night</span>
-      <span><i class="sw" style="background:var(--dusk)"></i>Forms in daylight, lives into the night (sun sets within 2 h)</span>
-      <span><i class="sw" style="background:var(--day)"></i>Daylight</span>
-    </div>
-    <p class="note" style="margin-top:8px">Bars show the share of cruise time, by local departure hour at the origin. Tap a bar to pick that time.</p>
+  <div class="routehead">
+    <h2 id="routeTitle">Your route</h2>
+    <div class="summary" id="summary"></div>
   </div>
   <div class="verdict" id="verdict"></div>
-  <div class="flags" id="flags"></div>
+  <div class="card">
+    <h3 style="font-size:17px;margin-bottom:8px">Night exposure by departure time</h3>
+    <div class="chart-wrap"><svg id="chart" viewBox="0 0 720 260" width="100%" role="img" aria-label="Share of cruise whose contrails would live in darkness, by departure hour"></svg></div>
+    <div class="legend">
+      <span><i class="sw" style="background:var(--blue)"></i>Contrail forms at night</span>
+      <span><i class="sw" style="background:var(--sky-3)"></i>Forms by day, lasts into the night</span>
+      <span><i class="sw" style="background:var(--sky-1)"></i>Daylight</span>
+    </div>
+    <p class="hint">Each bar is a departure hour (local time at your origin). Tap a bar to choose that time.</p>
+  </div>
+  <div class="more">
+    <p>Want more ways to cut your flight's climate impact?</p>
+    <a href="advice.html">Read: How to pick a cleaner flight →</a>
+  </div>
 </section>
 
 <section>
   <h2>Compare the flights you're looking at</h2>
-  <p>Copy the options from your flight search: departure time and aircraft type. They are ranked by night exposure, with cleaner-burning engines breaking ties. The rows below are examples.</p>
-  <div class="panel tbl-wrap">
+  <p>Add the departure time and aircraft for each option from your flight search. They're ranked by night exposure, with newer low-soot engines breaking ties. The rows below are examples.</p>
+  <div class="card tbl-wrap">
     <table>
-      <thead><tr><th>#</th><th>Flight</th><th>Departs</th><th>Aircraft</th><th>Night exposure</th><th>Engine</th></tr></thead>
+      <thead><tr><th>#</th><th>Flight</th><th>Departs</th><th>Aircraft</th><th>Night exposure</th><th>Engines</th></tr></thead>
       <tbody id="cmpBody"></tbody>
     </table>
-    <div style="display:flex;gap:8px;margin-top:12px;flex-wrap:wrap">
-      <button type="button" id="addRow">Add a flight</button>
+    <div class="actions">
+      <button type="button" id="addRow">+ Add a flight</button>
       <button type="button" class="primary" id="rank">Rank flights</button>
     </div>
   </div>
 </section>
 
-<section>
-  <h2>Aircraft: what actually matters</h2>
-  <ul class="rules">
-    <li><span>1</span><p><b>Combustor beats age.</b> Lean-burn combustors (GE's TAPS family on the GEnx, LEAP and GE9X) emit far less soot. Fewer soot particles mean fewer, larger ice crystals, so the contrail is optically thinner and falls out sooner.</p></li>
-    <li><span>2</span><p><b>Efficient engines form contrails slightly more easily.</b> Higher propulsive efficiency means cooler exhaust, which raises the threshold temperature for formation. The soot effect usually matters more for how long the contrail lasts.</p></li>
-    <li><span>3</span><p><b>Check the engine, not just the airframe.</b> A Boeing 787 can have GEnx (lean-burn) or Trent 1000 (rich-burn) engines depending on the airline. An A320neo can have LEAP-1A or PW1100G. Seat-map sites usually list the variant.</p></li>
-    <li><span>4</span><p><b>Never trade a nonstop for a connection.</b> The extra take-off and distance add CO₂ that usually outweighs any contrail saving.</p></li>
-  </ul>
-</section>
-
-<section>
-  <h2>Airlines and airspace trialling avoidance</h2>
-  <p>Trials cover a subset of flights, so booking with a trial airline does not mean your flight will be rerouted. The card for your route is highlighted.</p>
-  <div class="trials" id="trials">
-    <div class="trial" data-region="natl">
-      <div class="tag">North Atlantic · winter 2026–27 onward</div>
-      <h3>Operation Blue Skies</h3>
-      <p>NATS will make small altitude changes for flights crossing Shanwick oceanic airspace northwest of Ireland, guided by Google's forecasts, with the Met Office. Cambridge and Imperial verify the results independently. Participating airlines haven't been named.</p>
-      <a href="https://www.imperial.ac.uk/news/articles/natural-sciences/physics/2026/worlds-first-trial-to-test-if-flightpath-changes-could-cut-aviations-climate-impact-/" target="_blank" rel="noopener">Imperial College announcement</a>
-    </div>
-    <div class="trial" data-region="hkg">
-      <div class="tag">Asia &amp; transpacific · 2026</div>
-      <h3>Cathay Pacific with Google</h3>
-      <p>More than 80 of over 100 trial flights followed avoidance routes, with an estimated 40% cut in contrail warming on those flights. A larger second phase is under way.</p>
-      <a href="https://blog.google/innovation-and-ai/models-and-research/google-research/contrail-avoidance-ultra-long-haul-flights/" target="_blank" rel="noopener">Google announcement</a>
-    </div>
-    <div class="trial" data-region="us">
-      <div class="tag">United States · 2023 pilot</div>
-      <h3>American Airlines with Google and Breakthrough Energy</h3>
-      <p>An early pilot in which pilots used contrail forecasts to change altitude. Later Google analysis of a larger airline-led trial found 62% fewer contrails on flights that flew the avoidance plan, with no measurable fuel penalty.</p>
-      <a href="https://research.google/pubs/efficacy-of-scalable-airline-led-contrail-avoidance/" target="_blank" rel="noopener">Google Research paper</a>
-    </div>
-    <div class="trial" data-region="gulf">
-      <div class="tag">Gulf &amp; long-haul</div>
-      <h3>Etihad with SATAVIA</h3>
-      <p>Etihad has run contrail-avoidance flights using SATAVIA's forecasting platform. Check the airline's current sustainability pages for whether it is still active.</p>
-    </div>
-  </div>
-</section>
-
 <footer>
-  <p><b>How this is calculated.</b> The flight follows the great-circle route at an average 840 km/h, plus 30 minutes for taxi and climb. Winds are ignored, so eastbound transatlantic flights arrive earlier than shown. Cruise starts 25 minutes after take-off and ends 30 minutes before landing. Every 5 minutes of cruise, the sun's elevation is computed at the aircraft's position. A sample counts as night if the sun is below the horizon, and as "lives into the night" if the sun will set there within two hours.</p>
-  <p>Persistent contrails only form in ice-supersaturated air, which can't be forecast weeks ahead. This guide shows when a contrail <i>would</i> do the most harm, not whether one will form. Nothing here is a booking recommendation.</p>
+  <p><b>How it works.</b> Your flight follows the shortest route between the airports at 840 km/h, plus 30 minutes for taxi and climb. Every 5 minutes at cruise, the guide checks whether the sun is up where the plane is. Winds are ignored, so eastbound flights over the Atlantic arrive a little earlier than shown.</p>
+  <p>Persistent contrails only form in cold, humid air, which can't be forecast weeks ahead. The guide shows when a contrail would do the most harm, not whether one will form.</p>
 </footer>
 </div>
 
@@ -211,7 +169,7 @@ const AIRPORTS = [
 ["MAN","Manchester",53.354,-2.275,"Europe/London"],["EDI","Edinburgh",55.95,-3.372,"Europe/London"],
 ["DUB","Dublin",53.4213,-6.2701,"Europe/Dublin"],["CDG","Paris Charles de Gaulle",49.0097,2.5479,"Europe/Paris"],
 ["AMS","Amsterdam Schiphol",52.3105,4.7683,"Europe/Amsterdam"],["FRA","Frankfurt",50.0379,8.5622,"Europe/Berlin"],
-["MUC","Munich",48.3538,11.7861,"Europe/Berlin"],["ZRH","Zurich",47.4582,8.5555,"Europe/Zurich"],
+["MUC","Munich",48.3538,11.7861,"Europe/Berlin"],["STR","Stuttgart",48.6899,9.222,"Europe/Berlin"],["ZRH","Zurich",47.4582,8.5555,"Europe/Zurich"],
 ["MAD","Madrid Barajas",40.4983,-3.5676,"Europe/Madrid"],["FCO","Rome Fiumicino",41.8003,12.2389,"Europe/Rome"],
 ["ATH","Athens",37.9364,23.9445,"Europe/Athens"],["IST","Istanbul",41.2753,28.7519,"Europe/Istanbul"],
 ["CPH","Copenhagen",55.618,12.656,"Europe/Copenhagen"],["HEL","Helsinki",60.3172,24.9633,"Europe/Helsinki"],
@@ -234,13 +192,11 @@ const AIRPORTS = [
 ["AKL","Auckland",-37.0082,174.785,"Pacific/Auckland"],["JNB","Johannesburg",-26.1392,28.246,"Africa/Johannesburg"],
 ["CPT","Cape Town",-33.9715,18.6021,"Africa/Johannesburg"],["NBO","Nairobi",-1.3192,36.9278,"Africa/Nairobi"],
 ["CAI","Cairo",30.1219,31.4056,"Africa/Cairo"]];
+/* Aircraft by type only. A350 and 787 are treated as low-soot; everything else as standard. */
 const AIRCRAFT = [
- ["787 (GEnx)","Boeing 787 · GEnx-1B","lean"],["787 (Trent 1000)","Boeing 787 · Trent 1000","rich"],
- ["A350","Airbus A350 · Trent XWB","rich"],["777-300ER","Boeing 777-300ER · GE90","rich"],
- ["777-9","Boeing 777-9 · GE9X","lean"],["A330neo","Airbus A330neo · Trent 7000","rich"],
- ["A380","Airbus A380","rich"],["737 MAX","Boeing 737 MAX · LEAP-1B","lean"],
- ["A320neo (LEAP)","A320neo family · LEAP-1A","lean"],["A320neo (PW)","A320neo family · PW1100G","rich"],
- ["A220","Airbus A220 · PW1500G","rich"],["Older type","Older type (767, A330ceo, 737NG…)","rich"],["Unknown","Not sure","unk"]];
+ ["A220","Airbus A220",0],["A320","Airbus A319 / A320 / A321",0],["A330","Airbus A330",0],["A350","Airbus A350",1],["A380","Airbus A380",0],
+ ["737","Boeing 737",0],["747","Boeing 747",0],["767","Boeing 767",0],["777","Boeing 777",0],["787","Boeing 787",1],
+ ["E-Jet","Embraer E-Jet",0],["Other","Other / not sure",0]];
 
 const D2R=Math.PI/180, R2D=180/Math.PI;
 const $=id=>document.getElementById(id);
@@ -283,33 +239,29 @@ function fmtLocal(ms,tz){ return new Intl.DateTimeFormat("en-GB",{timeZone:tz,ho
 
 function exposure(route, depUtc){
   const T=(route.km/840+0.5)*3600e3, start=25*60e3, end=T-30*60e3, step=5*60e3;
-  let n=0,night=0,dusk=0, natl=false, winterHiLat=false;
+  let n=0,night=0,dusk=0;
   for(let t=start;t<=end;t+=step){
     const [lat,lon]=route.point(t/T), now=depUtc+t;
-    const e0=sunElev(now,lat,lon);
-    if(e0<0) night++; else if(sunElev(now+2*3600e3,lat,lon)<0) dusk++;
-    if(lat>45&&lat<65&&lon>-50&&lon<-10) natl=true;
+    if(sunElev(now,lat,lon)<0) night++; else if(sunElev(now+2*3600e3,lat,lon)<0) dusk++;
     n++;
   }
-  if(n===0) return {night:0,dusk:0,score:0,T,natl};
-  return {night:night/n, dusk:dusk/n, score:(night+dusk)/n, T, natl};
+  if(n===0) return {night:0,dusk:0,score:0,T};
+  return {night:night/n, dusk:dusk/n, score:(night+dusk)/n, T};
 }
 
 const state={o:null,d:null,route:null,date:null,sel:18*60+30};
 function compute(){
   const o=findAp($("orig").value), d=findAp($("dest").value), date=$("date").value;
   const err=$("err");
-  if(!o||!d||o===d||!date){ err.hidden=false; err.textContent= !o||!d ? "Pick both airports from the list (type a city or a three-letter code)." : o===d ? "Origin and destination are the same airport." : "Choose a travel date."; return; }
+  if(!o||!d||o===d||!date){ err.hidden=false; err.textContent= !o||!d ? "Pick both airports from the list. You can type a city or a three-letter code." : o===d ? "The two airports are the same. Choose a different destination." : "Choose a travel date."; return; }
   err.hidden=true;
   const [hh,mm]=($("hour").value||"18:30").split(":").map(Number); state.sel=hh*60+mm;
   Object.assign(state,{o,d,date,route:gc(o,d)});
   const hours=[...Array(24)].map((_,h)=>exposure(state.route, localToUtc(date,h*60,o[4])));
   const selDep=localToUtc(date,state.sel,o[4]), selEx=exposure(state.route,selDep);
-  drawChart(hours);
   renderSummary(selDep, selEx);
   renderVerdict(hours, selEx);
-  renderFlags(hours, selEx);
-  renderTrials(hours.some(h=>h.natl));
+  drawChart(hours);
   rank();
 }
 function pct(x){return Math.round(x*100)+"%";}
@@ -317,27 +269,27 @@ function level(s){return s<0.15?["low","Low"]:s<0.5?["mid","Medium"]:["high","Hi
 
 function renderSummary(dep,ex){
   const {o,d,route}=state;
-  $("routeTitle").textContent=`${o[1]} to ${d[1]}`;
+  $("routeTitle").textContent=`${o[1]} → ${d[1]}`;
   const h=Math.floor(ex.T/3600e3), m=Math.round((ex.T%3600e3)/60e3);
-  $("summary").innerHTML=`<span>Distance <b>${Math.round(route.km).toLocaleString("en-GB")} km</b></span><span>Est. flight time <b>${h} h ${String(m).padStart(2,"0")}</b></span><span>Your departure <b>${fmtLocal(dep,o[4])}</b> → arrives <b>${fmtLocal(dep+ex.T,d[4])}</b> local</span>`;
+  $("summary").innerHTML=`<span><b>${Math.round(route.km).toLocaleString("en-GB")} km</b></span><span>about <b>${h} h ${String(m).padStart(2,"0")}</b> in the air</span><span>Departs <b>${fmtLocal(dep,o[4])}</b>, arrives <b>${fmtLocal(dep+ex.T,d[4])}</b> local time</span>`;
 }
 function drawChart(hours){
-  const W=720,H=260,L=44,R=10,T=14,B=40, bw=(W-L-R)/24, ch=H-T-B, svg=$("chart");
+  const W=720,H=250,L=44,R=10,T=10,B=40, bw=(W-L-R)/24, ch=H-T-B, svg=$("chart");
   let s="";
   [0,25,50,75,100].forEach(v=>{const y=T+ch*(1-v/100);
-    s+=`<line x1="${L}" x2="${W-R}" y1="${y}" y2="${y}" stroke="var(--line)" stroke-width="1"/><text x="${L-8}" y="${y+4}" text-anchor="end" font-size="11" fill="var(--muted)">${v}%</text>`;});
+    s+=`<line x1="${L}" x2="${W-R}" y1="${y}" y2="${y}" stroke="var(--line)" stroke-width="1"/><text x="${L-8}" y="${y+4}" text-anchor="end" font-size="12" fill="var(--muted)">${v}%</text>`;});
   hours.forEach((e,h)=>{
     const x=L+h*bw+2, w=bw-4, nH=ch*e.night, dH=ch*e.dusk, dayH=ch-nH-dH;
     const selected = Math.floor(state.sel/60)===h;
     s+=`<g class="bar" data-h="${h}" style="cursor:pointer"><title>${String(h).padStart(2,"0")}:00 departure: ${pct(e.score)} of cruise in or into darkness</title>`;
-    s+=`<rect x="${x}" y="${T}" width="${w}" height="${Math.max(dayH,0)}" fill="var(--day)" opacity="${selected?0.9:0.45}"/>`;
-    s+=`<rect x="${x}" y="${T+dayH}" width="${w}" height="${dH}" fill="var(--dusk)"/>`;
-    s+=`<rect x="${x}" y="${T+dayH+dH}" width="${w}" height="${nH}" fill="var(--night)"/>`;
-    if(selected) s+=`<rect x="${x-1.5}" y="${T-1.5}" width="${w+3}" height="${ch+3}" fill="none" stroke="var(--fg)" stroke-width="2" rx="2"/>`;
+    s+=`<rect x="${x}" y="${T}" width="${w}" height="${Math.max(dayH,0)}" fill="var(--sky-1)" opacity="${selected?1:0.6}" rx="2"/>`;
+    s+=`<rect x="${x}" y="${T+dayH}" width="${w}" height="${dH}" fill="var(--sky-3)"/>`;
+    s+=`<rect x="${x}" y="${T+dayH+dH}" width="${w}" height="${nH}" fill="var(--blue)"/>`;
+    if(selected) s+=`<rect x="${x-1.5}" y="${T-1.5}" width="${w+3}" height="${ch+3}" fill="none" stroke="var(--ink)" stroke-width="2" rx="3"/>`;
     s+=`</g>`;
-    if(h%3===0) s+=`<text x="${x+w/2}" y="${H-B+18}" text-anchor="middle" font-size="11" fill="var(--muted)">${String(h).padStart(2,"0")}:00</text>`;
+    if(h%3===0) s+=`<text x="${x+w/2}" y="${H-B+18}" text-anchor="middle" font-size="12" fill="var(--muted)">${String(h).padStart(2,"0")}:00</text>`;
   });
-  s+=`<text x="${(W+L)/2}" y="${H-4}" text-anchor="middle" font-size="11" fill="var(--muted)">Local departure time at ${state.o[0]}</text>`;
+  s+=`<text x="${(W+L)/2}" y="${H-4}" text-anchor="middle" font-size="12" fill="var(--muted)">Departure time at ${state.o[0]}</text>`;
   svg.innerHTML=s;
   svg.querySelectorAll(".bar").forEach(g=>g.addEventListener("click",()=>{ $("hour").value=String(g.dataset.h).padStart(2,"0")+":00"; compute(); }));
 }
@@ -346,61 +298,46 @@ function window_(hours, pick){
   const ok=hours.map((h,i)=>[i,h.score]).filter(([,s])=>Math.abs(s-target)<=0.05).map(([i])=>i);
   const runs=[]; ok.forEach(i=>{ const r=runs[runs.length-1]; if(r&&r[1]===i-1) r[1]=i; else runs.push([i,i]); });
   const f=i=>String(i).padStart(2,"0")+":00";
-  return {target, text: runs.slice(0,3).map(([a,b])=>a===b?f(a):`${f(a)}–${f(b)}`).join(", ")};
+  return {target, text: runs.slice(0,2).map(([a,b])=>a===b?f(a):`${f(a)}–${f(b)}`).join(", ")};
 }
 function renderVerdict(hours, sel){
-  const best=window_(hours,Math.min), worst=window_(hours,Math.max), [cls,lab]=level(sel.score);
+  const best=window_(hours,Math.min), worst=window_(hours,Math.max), [,lab]=level(sel.score);
   $("verdict").innerHTML=`
-  <div class="best"><span class="eyebrow">Best departures</span><span class="big">${best.text}</span><span class="note">${pct(best.target)} of cruise in or into darkness</span></div>
-  <div class="worst"><span class="eyebrow">Worst departures</span><span class="big">${worst.text}</span><span class="note">${pct(worst.target)} of cruise in or into darkness</span></div>
-  <div><span class="eyebrow">Your departure</span><span class="big"><span class="pill ${cls}" style="font-size:16px">${lab}</span> ${pct(sel.score)}</span><span class="note">${pct(sel.night)} at night, ${pct(sel.dusk)} formed before sunset</span></div>`;
-}
-function renderFlags(hours, sel){
-  const m=+state.date.slice(5,7), out=[];
-  const natl=hours.some(h=>h.natl);
-  if(natl && (m>=11||m<=2)) out.push(["hot",`<b>Peak season on this route.</b> Contrails over the North Atlantic are most common in the evening between November and February, and this route crosses Shanwick oceanic airspace.`]);
-  else if(natl) out.push(["",`<b>This route crosses Shanwick oceanic airspace</b>, one of the busiest contrail regions in the world. Contrails there peak in winter evenings.`]);
-  const spread=Math.max(...hours.map(h=>h.score))-Math.min(...hours.map(h=>h.score));
-  if(spread<0.15) out.push(["",`<b>Departure time barely matters on this date.</b> The flight is long enough that most departures spend a similar share of cruise in darkness. Focus on aircraft choice and a nonstop routing.`]);
-  out.push(["",`<b>Check the return too.</b> Overnight eastbound flights spend most of their cruise in darkness. Use ⇄ to swap the airports and see the other direction.`]);
-  $("flags").innerHTML=out.map(([c,t])=>`<div class="flag ${c}"><p>${t}</p></div>`).join("");
-}
-function renderTrials(natl){
-  const ends=[state.o[0],state.d[0]], us=["BOS","JFK","EWR","IAD","ORD","ATL","DFW","DEN","SFO","LAX","SEA","MIA"];
-  const on={natl, hkg:ends.includes("HKG"), us:ends.every(c=>us.includes(c))||(ends.some(c=>us.includes(c))&&natl), gulf:ends.some(c=>["AUH"].includes(c))};
-  document.querySelectorAll(".trial").forEach(t=>t.classList.toggle("on",!!on[t.dataset.region]));
+  <div class="v best"><span class="lab">Best time to depart</span><span class="big">${best.text}</span><span class="note">${pct(best.target)} of the flight in or into darkness</span></div>
+  <div class="v worst"><span class="lab">Worst time to depart</span><span class="big">${worst.text}</span><span class="note">${pct(worst.target)} of the flight in or into darkness</span></div>
+  <div class="v yours"><span class="lab">Your departure</span><span class="big">${lab} · ${pct(sel.score)}</span><span class="note">${pct(sel.night)} at night, ${pct(sel.dusk)} lasting past sunset</span></div>`;
 }
 
 /* comparison table */
-const EXAMPLES=[["Example A","09:30","A350"],["Example B","12:15","787 (GEnx)"],["Example C","16:40","777-300ER"],["Example D","19:55","787 (Trent 1000)"]];
+const EXAMPLES=[["Example A","09:30","A350"],["Example B","12:15","787"],["Example C","16:40","777"],["Example D","19:55","A380"]];
 let rowId=0;
-function addRow(name="",time="12:00",ac="Unknown"){
+function addRow(name="",time="12:00",ac="Other"){
   const id=rowId++, tr=document.createElement("tr");
   tr.innerHTML=`<td class="rank">–</td>
-   <td><input id="n${id}" value="${name}" placeholder="e.g. BA 213" aria-label="Flight name" style="min-width:90px"></td>
-   <td><input id="t${id}" type="time" value="${time}" aria-label="Departure time" style="min-width:96px"></td>
-   <td><select id="a${id}" aria-label="Aircraft" style="min-width:150px">${AIRCRAFT.map(a=>`<option value="${a[0]}"${a[0]===ac?" selected":""}>${a[1]}</option>`).join("")}</select></td>
+   <td><input id="n${id}" value="${name}" placeholder="e.g. BA 213" aria-label="Flight name" style="min-width:100px"></td>
+   <td><input id="t${id}" type="time" value="${time}" aria-label="Departure time" style="min-width:100px"></td>
+   <td><select id="a${id}" aria-label="Aircraft" style="min-width:170px">${AIRCRAFT.map(a=>`<option value="${a[0]}"${a[0]===ac?" selected":""}>${a[1]}</option>`).join("")}</select></td>
    <td class="ex">–</td><td class="eng">–</td>`;
   $("cmpBody").appendChild(tr);
 }
 function rank(){
   if(!state.route) return;
   const rows=[...$("cmpBody").rows].map(tr=>{
-    const [n,t,a]=tr.querySelectorAll("input,select"); const [hh,mm]=(t.value||"12:00").split(":").map(Number);
+    const [,t,a]=tr.querySelectorAll("input,select"); const [hh,mm]=(t.value||"12:00").split(":").map(Number);
     const ex=exposure(state.route, localToUtc(state.date,hh*60+mm,state.o[4]));
-    const eng=AIRCRAFT.find(x=>x[0]===a.value)[2];
-    return {tr,ex,eng,key:ex.score+(eng==="lean"?-0.02:0)};
+    const lean=AIRCRAFT.find(x=>x[0]===a.value)[2]===1;
+    return {tr,ex,lean,key:ex.score+(lean?-0.02:0)};
   });
   rows.sort((x,y)=>x.key-y.key).forEach((r,i)=>{
     const [cls,lab]=level(r.ex.score);
     r.tr.querySelector(".rank").textContent=i+1;
     r.tr.querySelector(".ex").innerHTML=`<span class="pill ${cls}">${lab} · ${pct(r.ex.score)}</span>`;
-    r.tr.querySelector(".eng").innerHTML= r.eng==="lean"?`<span class="pill lean">Lean-burn</span>`: r.eng==="rich"?`<span class="pill rich">Rich-burn</span>`:`<span class="note">Unknown</span>`;
+    r.tr.querySelector(".eng").innerHTML= r.lean?`<span class="pill lean">Low soot</span>`:`<span class="std">Standard</span>`;
     $("cmpBody").appendChild(r.tr);
   });
 }
 EXAMPLES.forEach(e=>addRow(...e));
-$("addRow").onclick=()=>addRow();
+$("addRow").onclick=()=>{addRow();rank();};
 $("rank").onclick=rank;
 $("cmpBody").addEventListener("change",rank);
 $("swap").onclick=()=>{ const a=$("orig").value; $("orig").value=$("dest").value; $("dest").value=a; compute(); };

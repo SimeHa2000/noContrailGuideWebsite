@@ -6,49 +6,45 @@
 <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
 <meta name="description" content="Five rules for picking the flight with the smallest climate impact: fly direct, fly by day, fly modern aircraft, and more.">
 <link rel="preconnect" href="https://fonts.googleapis.com">
-<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Schibsted+Grotesk:wght@500;700;800&family=IBM+Plex+Sans:ital,wght@0,400;0,500;0,600;1,400&family=IBM+Plex+Mono:wght@400;500&display=swap">
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Google+Sans+Flex:wght@400;500;700&display=swap">
 <style>
 /* Layout: article column (~66ch) with the site nav; each rule is a numbered block in priority order, big rules first, nuanced rules after a divider. */
 :root{
-  --bg:#f5f7fa; --surface:#ffffff; --fg:#14202e; --muted:#5a6878; --line:#d9e0e8;
-  --accent:#0b7a85; --accent-soft:#e1f2f3; --night:#2b3a67;
-  --display:"Schibsted Grotesk", "Helvetica Neue", Arial, sans-serif;
-  --body:"IBM Plex Sans", system-ui, -apple-system, "Segoe UI", sans-serif;
-  --mono:"IBM Plex Mono", ui-monospace, Menlo, Consolas, monospace;
+  --sky-1:#9BE8FF; --sky-2:#5BC9FF; --sky-3:#00B8FF; --blue:#4A7BFF; --sun:#FEFF50;
+  --bg:#FFFFFF; --surface:#FFFFFF; --fg:#0E2148; --muted:#4F6385; --line:#D6EAF7; --wash:#E8F8FF;
+  --accent:#2B5CE6; --accent-soft:#E8F8FF; --plate:#FFFFFF; --night:#4A7BFF;
+  --display:"Google Sans Flex","Google Sans","Product Sans",system-ui,-apple-system,"Segoe UI",Roboto,sans-serif;
+  --body:var(--display); --mono:var(--display);
+  color-scheme:light;
 }
-@media (prefers-color-scheme: dark){ :root:not([data-theme="light"]){
-  --bg:#0d1420; --surface:#141e2d; --fg:#e4ebf3; --muted:#93a2b4; --line:#26344a;
-  --accent:#5cc6cf; --accent-soft:#163a42; --night:#8a9be0; color-scheme:dark }}
-:root[data-theme="dark"]{
-  --bg:#0d1420; --surface:#141e2d; --fg:#e4ebf3; --muted:#93a2b4; --line:#26344a;
-  --accent:#5cc6cf; --accent-soft:#163a42; --night:#8a9be0; color-scheme:dark }
-body{background:var(--bg);color:var(--fg);font-family:var(--body);font-size:16px;line-height:1.65}
+body{background:linear-gradient(180deg,var(--sky-1) 0,var(--wash) 260px,var(--bg) 560px) no-repeat,var(--bg);color:var(--fg);font-family:var(--body);font-size:16px;line-height:1.65;font-variant-numeric:tabular-nums}
 .wrap{max-width:860px;margin:0 auto;padding-inline:20px;padding-block:20px 56px;display:flex;flex-direction:column;gap:44px}
-.sitenav{display:flex;justify-content:space-between;align-items:center;gap:12px;flex-wrap:wrap;font:500 13px var(--mono);padding-bottom:14px;border-bottom:1px solid var(--line)}
-.sitenav .brand{color:var(--fg);text-decoration:none;font-weight:500}
-.sitenav nav{display:flex;gap:18px;flex-wrap:wrap}
-.sitenav nav a{color:var(--muted);text-decoration:none}
-.sitenav nav a[aria-current]{color:var(--accent)}
-.sitenav nav a:hover{color:var(--fg)}
+.sitenav{display:flex;justify-content:space-between;align-items:center;gap:12px;flex-wrap:wrap;font-size:15px}
+.sitenav .brand{display:flex;align-items:center;gap:10px;color:var(--fg);text-decoration:none;font-weight:700}
+.sun{width:22px;height:22px;border-radius:50%;background:var(--sun);box-shadow:0 0 0 5px color-mix(in srgb,var(--sun) 35%,transparent)}
+.sitenav nav{display:flex;gap:20px;flex-wrap:wrap}
+.sitenav nav a{color:var(--fg);text-decoration:none;opacity:.7}
+.sitenav nav a[aria-current]{opacity:1;font-weight:700}
+.sitenav nav a:hover{opacity:1}
 article{max-width:680px;display:flex;flex-direction:column;gap:44px}
-h1,h2,h3{font-family:var(--display);text-wrap:balance;margin:0;line-height:1.15}
+h1,h2,h3{font-family:var(--display);font-weight:700;text-wrap:balance;margin:0;line-height:1.15}
 h1{font-size:clamp(32px,6vw,50px);font-weight:800;letter-spacing:-0.02em}
 h2{font-size:clamp(22px,3.6vw,28px);font-weight:700;letter-spacing:-0.01em}
 p{margin:0;max-width:66ch}
 a{color:var(--accent)}
 a:focus-visible{outline:2px solid var(--accent);outline-offset:2px}
-.eyebrow{font:500 12px var(--mono);letter-spacing:.08em;text-transform:uppercase;color:var(--accent)}
+.eyebrow{font-size:14px;font-weight:700;color:var(--blue)}
 header{display:flex;flex-direction:column;gap:14px}
 .lede{font-size:19px;color:var(--muted);line-height:1.55}
 .byline{font:13px var(--mono);color:var(--muted)}
 .byline a{color:inherit}
 .rule{display:grid;grid-template-columns:64px 1fr;gap:4px 18px}
-.rule .n{font:800 46px/1 var(--display);color:var(--accent);letter-spacing:-0.03em}
+.rule .n{font:700 46px/1 var(--display);color:var(--blue);letter-spacing:-0.03em}
 .rule .body{display:flex;flex-direction:column;gap:14px;min-width:0}
-.do{border-left:3px solid var(--accent);background:var(--accent-soft);padding:10px 14px;border-radius:0 6px 6px 0;font-weight:500}
-.do b{font:500 11px var(--mono);letter-spacing:.08em;text-transform:uppercase;color:var(--accent);display:block;margin-bottom:2px}
+.do{background:var(--wash);padding:14px 16px;border-radius:14px;font-weight:500}
+.do b{font-size:14px;font-weight:700;color:var(--blue);display:block;margin-bottom:2px}
 .stat{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:12px}
-.stat > div{border-top:2px solid var(--night);padding-top:8px;display:flex;flex-direction:column;gap:2px}
+.stat > div{border-radius:14px;background:var(--wash);padding:14px 16px;display:flex;flex-direction:column;gap:2px}
 .stat .big{font:700 30px/1.1 var(--display);color:var(--night)}
 .stat .small{font-size:14px;color:var(--muted)}
 .divider{display:flex;flex-direction:column;gap:8px;padding-top:20px;border-top:1px solid var(--line)}
@@ -69,7 +65,7 @@ footer{font-size:13px;color:var(--muted);border-top:1px solid var(--line);paddin
 
 <div class="wrap">
 <div class="sitenav">
-  <a class="brand" href="index.html">nocontrailguide.org</a>
+  <a class="brand" href="index.html"><span class="sun" aria-hidden="true"></span>nocontrailguide.org</a>
   <nav aria-label="Site"><a href="index.html">Flight guide</a><a href="advice.html" aria-current="page">How to fly</a><a href="about.html">About</a></nav>
 </div>
 
